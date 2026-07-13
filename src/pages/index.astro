@@ -13,7 +13,7 @@ const client = createClient({
 
 // Consulta nativa en tiempo de ejecución para estirar los textos publicados
 const cmsDataArray = await client.fetch(`*[_type == "landingContent"]`);
-const cms = cmsDataArray[0] || {};
+const cms = cmsDataArray || {};
 
 // Mapeo estricto al objeto de traducciones para alimentar el script cliente
 const translations = {
@@ -135,9 +135,9 @@ const translations = {
 
         <!-- ==================== BLOQUE DE MÓVIL (block md:hidden) ==================== -->
         <div class="w-full h-full relative block md:hidden">
-          <!-- Fachada HTML del Video móvil apuntando a public/images/ -->
+          <!-- Fachada HTML del Video móvil apuntando a public/images/ con decoding async -->
           <div id="mobile-facade" class="absolute inset-0 z-20 transition-opacity duration-500 ease-out">
-            <img src="/images/video-mobile-facade.png" alt="Video Preview Facade" class="w-full h-full object-cover rounded-2xl" fetchpriority="high" loading="eager" />
+            <img src="/images/video-mobile-facade.png" alt="Video Preview Facade" class="w-full h-full object-cover rounded-2xl" fetchpriority="high" loading="eager" decoding="async" />
           </div>
           <!-- Video Nativo Real: preload="none" detiene las predescargas destructivas de datos -->
           <video id="mobile-video" class="w-full h-full object-cover absolute inset-0 z-10 rounded-2xl" muted playsinline loop preload="none">
@@ -293,19 +293,19 @@ const translations = {
     }
   });
 
-  // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (EDICIÓN PERF OPTIMIZADA) ---
+  // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (CALIBRACIÓN PERFECTA 1.5S) ---
   function orchestrateFacades() {
     const dFacade = document.getElementById('desktop-facade');
     const dInteractive = document.getElementById('desktop-interactive');
 
     if (dFacade && dInteractive) {
       const swapDesktop = () => {
-        // Retrasamos la carga pesada de Spline 4.5 segundos para liberar la CPU de PageSpeed
+        // Calibración exacta a 1.5s para unificar el rendimiento móvil y de escritorio
         setTimeout(() => {
           dInteractive.classList.remove('opacity-0');
           dFacade.classList.add('opacity-0');
           setTimeout(() => dFacade.remove(), 500);
-        }, 4500);
+        }, 1500);
       };
 
       if ('requestIdleCallback' in window) {
@@ -320,13 +320,16 @@ const translations = {
 
     if (mFacade && mVideo) {
       const swapMobile = () => {
-        mVideo.preload = "auto";
-        mVideo.play().then(() => {
-          mFacade.classList.add('opacity-0');
-          setTimeout(() => mFacade.remove(), 500);
-        }).catch((err) => {
-          console.warn("Autoplay blocked on mobile, keeping facade active.", err);
-        });
+        // Calibración síncrona a 1.5s para no retrasar el hilo interactivo en celulares
+        setTimeout(() => {
+          mVideo.preload = "auto";
+          mVideo.play().then(() => {
+            mFacade.classList.add('opacity-0');
+            setTimeout(() => mFacade.remove(), 500);
+          }).catch((err) => {
+            console.warn("Autoplay blocked on mobile, keeping facade active.", err);
+          });
+        }, 1500);
       };
 
       if ('requestIdleCallback' in window) {
