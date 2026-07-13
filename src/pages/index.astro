@@ -7,13 +7,13 @@ import { createClient } from '@sanity/client';
 const client = createClient({
   projectId: 'rgu9dc3a',
   dataset: 'production',
-  useCdn: false, 
+  useCdn: false,
   apiVersion: '2026-03-12',
 });
 
 // Consulta nativa en tiempo de ejecución para estirar los textos publicados
 const cmsDataArray = await client.fetch(`*[_type == "landingContent"]`);
-const cms = cmsDataArray[0] || {}; 
+const cms = cmsDataArray[0] || {};
 
 // Mapeo estricto al objeto de traducciones para alimentar el script cliente
 const translations = {
@@ -74,224 +74,271 @@ const translations = {
 };
 ---
 <Layout title="Premium Web Development for High-Converting Agencies">
-	<!-- Hero Section con posicionamiento relativo -->
-	<section class="relative min-h-screen flex items-center bg-slate-950 text-slate-50 px-6 overflow-hidden">
-		
-		<!-- Contenedor invisible que mide el 100% del ancho de la pantalla -->
-		<div class="absolute top-6 left-0 w-screen z-50 pointer-events-none">
-			<!-- Botones posicionados al extremo derecho absoluto con margen mínimo al scrollbar -->
-			<div class="absolute right-4 md:right-6 lg:right-8 bg-slate-900/90 backdrop-blur-md border border-slate-800 px-3 py-1.5 rounded-full flex items-center gap-1 shadow-2xl transition-all hover:border-slate-700 pointer-events-auto">
-				<button id="btn-en" class="text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer bg-emerald-500 text-slate-950 select-none">
-					EN
-				</button>
-				<button id="btn-es" class="text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer text-slate-400 hover:text-white select-none">
-					ES
-				</button>
-			</div>
-		</div>
+<!-- Hero Section con posicionamiento relativo -->
+<section class="relative min-h-screen flex items-center bg-slate-950 text-slate-50 px-6 overflow-hidden">
+<!-- Contenedor invisible que mide el 100% del ancho de la pantalla -->
+<div class="absolute top-6 left-0 w-screen z-50 pointer-events-none">
+<!-- Botones posicionados al extremo derecho absoluto con margen mínimo al scrollbar -->
+<div class="absolute right-4 md:right-6 lg:right-8 bg-slate-900/90 backdrop-blur-md border border-slate-800 px-3 py-1.5 rounded-full flex items-center gap-1 shadow-2xl transition-all hover:border-slate-700 pointer-events-auto">
+<button id="btn-en" class="text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer bg-emerald-500 text-slate-950 select-none">
+EN
+</button>
+<button id="btn-es" class="text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer text-slate-400 hover:text-white select-none">
+ES
+</button>
+</div>
+</div>
+<!-- Grid Limpio al Ancho Máximo Estándar -->
+<div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
+<!-- Left: Value Proposition -->
+<div class="flex flex-col gap-6 max-w-xl">
+<span class="text-sm font-semibold tracking-wider text-emerald-400 uppercase" data-i18n="hero_badge">
+{translations.en.hero_badge}
+</span>
+<h1 class="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
+<span data-i18n="hero_title_1">{translations.en.hero_title_1}</span> <br />
+<span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-500" data-i18n="hero_title_2">
+{translations.en.hero_title_2}
+</span>
+</h1>
+<p class="text-lg text-slate-400 leading-relaxed" data-i18n="hero_desc">
+{translations.en.hero_desc}
+</p>
+<!-- Contenedor balanceado y con tamaño responsivo impecable -->
+<div class="flex flex-col sm:flex-row gap-4 mt-4 items-stretch sm:items-center w-full">
+<a href="#contact" class="flex items-center justify-center px-4 md:px-5 py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg transition-all text-center shadow-lg shadow-emerald-500/20 text-sm md:text-base whitespace-nowrap min-h-[56px] flex-1 sm:flex-initial" data-i18n="hero_btn_audit">
+{translations.en.hero_btn_audit}
+</a>
+<a href="#features" class="flex items-center justify-center px-4 md:px-5 py-4 bg-slate-900 border border-slate-800 hover:bg-slate-800 font-semibold rounded-lg transition-all text-center text-sm md:text-base whitespace-nowrap min-h-[56px] flex-1 sm:flex-initial" data-i18n="hero_btn_proof">
+{translations.en.hero_btn_proof}
+</a>
+</div>
+</div>
 
-		<!-- Grid Limpio al Ancho Máximo Estándar -->
-		<div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
-			
-			<!-- Left: Value Proposition -->
-			<div class="flex flex-col gap-6 max-w-xl">
-				<span class="text-sm font-semibold tracking-wider text-emerald-400 uppercase" data-i18n="hero_badge">
-					{translations.en.hero_badge}
-				</span>
-				<h1 class="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
-					<span data-i18n="hero_title_1">{translations.en.hero_title_1}</span> <br />
-					<span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-500" data-i18n="hero_title_2">
-						{translations.en.hero_title_2}
-					</span>
-				</h1>
-				<p class="text-lg text-slate-400 leading-relaxed" data-i18n="hero_desc">
-					{translations.en.hero_desc}
-				</p>
-				<!-- Contenedor balanceado y con tamaño responsivo impecable -->
-				<div class="flex flex-col sm:flex-row gap-4 mt-4 items-stretch sm:items-center w-full">
-					<a href="#contact" class="flex items-center justify-center px-4 md:px-5 py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg transition-all text-center shadow-lg shadow-emerald-500/20 text-sm md:text-base whitespace-nowrap min-h-[56px] flex-1 sm:flex-initial" data-i18n="hero_btn_audit">
-						{translations.en.hero_btn_audit}
-					</a>
-					<a href="#features" class="flex items-center justify-center px-4 md:px-5 py-4 bg-slate-900 border border-slate-800 hover:bg-slate-800 font-semibold rounded-lg transition-all text-center text-sm md:text-base whitespace-nowrap min-h-[56px] flex-1 sm:flex-initial" data-i18n="hero_btn_proof">
-						{translations.en.hero_btn_proof}
-					</a>
-				</div>
-			</div>
+<!-- Right: Contenedor Rediseñado Quirúrgicamente con el Patrón Fachada Multipantalla -->
+<div class="relative w-full aspect-square max-w-[500px] lg:max-w-none mx-auto flex items-center justify-center">
+<!-- Brillo de fondo escalado -->
+<div class="absolute inset-0 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-			<!-- Right: Contenedor Cuadrado Perfecto con Relación de Aspecto Proporcional para Spline -->
-			<div class="relative w-full aspect-square max-w-[500px] lg:max-w-none mx-auto flex items-center justify-center">
-				<!-- Brillo de fondo escalado -->
-				<div class="absolute inset-0 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-				<RobotViewer client:only="react" />
-			</div>
+<!-- ==================== BLOQUE DE ESCRITORIO (hidden md:block) ==================== -->
+<div class="w-full h-full relative hidden md:block">
+<!-- Fachada HTML del Robot apuntando a public/images/ (LCP perfecto) -->
+<div id="desktop-facade" class="absolute inset-0 z-20 transition-opacity duration-500 ease-out">
+<img 
+src="/images/robot-facade.png" 
+alt="Robot Render Facade" 
+class="w-full h-full object-contain"
+fetchpriority="high"
+loading="eager"
+/>
+</div>
+<!-- Canvas 3D Real: Hidratación diferida al ralentí del navegador para mitigar el TBT -->
+<div id="desktop-interactive" class="absolute inset-0 z-10 opacity-0 transition-opacity duration-700 ease-in">
+<RobotViewer client:idle />
+</div>
+</div>
 
-		</div>
-	</section>
+<!-- ==================== BLOQUE DE MÓVIL (block md:hidden) ==================== -->
+<div class="w-full h-full relative block md:hidden">
+<!-- Fachada HTML del Video móvil apuntando a public/images/ -->
+<div id="mobile-facade" class="absolute inset-0 z-20 transition-opacity duration-500 ease-out">
+<img 
+src="/images/video-mobile-facade.png" 
+alt="Video Preview Facade" 
+class="w-full h-full object-cover rounded-2xl"
+fetchpriority="high"
+loading="eager"
+/>
+</div>
+<!-- Video Nativo Real: preload="none" detiene las predescargas destructivas de datos -->
+<video 
+id="mobile-video"
+class="w-full h-full object-cover absolute inset-0 z-10 rounded-2xl"
+muted 
+playsinline 
+loop
+preload="none"
+>
+<source src="/videos/robot-demo-mobile.webm" type="video/webm" />
+</video>
+</div>
+</div>
 
-	<!-- Problem/Agitation Section -->
-	<section id="features" class="py-24 bg-slate-900 text-slate-50 px-6">
-		<div class="max-w-5xl mx-auto text-center flex flex-col gap-4">
-			<h2 class="text-3xl md:text-4xl font-bold tracking-tight" data-i18n="features_heading">
-				{translations.en.features_heading}
-			</h2>
-			<p class="text-slate-400 max-w-2xl mx-auto" data-i18n="features_subheading">
-				{translations.en.features_subheading}
-			</p>
-		</div>
-		<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-			<!-- Feature 1 -->
-			<div class="p-8 bg-slate-950 border border-slate-800 rounded-xl flex flex-col gap-4">
-				<div class="text-emerald-400 text-2xl font-bold" data-i18n="feat_1_metric">{translations.en.feat_1_metric}</div>
-				<h3 class="text-xl font-bold" data-i18n="feat_1_title">{translations.en.feat_1_title}</h3>
-				<p class="text-slate-400 text-sm leading-relaxed" data-i18n="feat_1_desc">{translations.en.feat_1_desc}</p>
-			</div>
-			<!-- Feature 2 -->
-			<div class="p-8 bg-slate-950 border border-slate-800 rounded-xl flex flex-col gap-4">
-				<div class="text-emerald-400 text-2xl font-bold" data-i18n="feat_2_metric">{translations.en.feat_2_metric}</div>
-				<h3 class="text-xl font-bold" data-i18n="feat_2_title">{translations.en.feat_2_title}</h3>
-				<p class="text-slate-400 text-sm leading-relaxed" data-i18n="feat_2_desc">{translations.en.feat_2_desc}</p>
-			</div>
-			<!-- Feature 3 -->
-			<div class="p-8 bg-slate-950 border border-slate-800 rounded-xl flex flex-col gap-4">
-				<div class="text-emerald-400 text-2xl font-bold" data-i18n="feat_3_metric">{translations.en.feat_3_metric}</div>
-				<h3 class="text-xl font-bold" data-i18n="feat_3_title">{translations.en.feat_3_title}</h3>
-				<p class="text-slate-400 text-sm leading-relaxed" data-i18n="feat_3_desc">{translations.en.feat_3_desc}</p>
-			</div>
-		</div>
-	</section>
+</div>
+</section>
+<!-- Problem/Agitation Section -->
+<section id="features" class="py-24 bg-slate-900 text-slate-50 px-6">
+<div class="max-w-5xl mx-auto text-center flex flex-col gap-4">
+<h2 class="text-3xl md:text-4xl font-bold tracking-tight" data-i18n="features_heading">
+{translations.en.features_heading}
+</h2>
+<p class="text-slate-400 max-w-2xl mx-auto" data-i18n="features_subheading">
+{translations.en.features_subheading}
+</p>
+</div>
+<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+<div class="p-8 bg-slate-950 border border-slate-800 rounded-xl flex flex-col gap-4">
+<div class="text-emerald-400 text-2xl font-bold" data-i18n="feat_1_metric">{translations.en.feat_1_metric}</div>
+<h3 class="text-xl font-bold" data-i18n="feat_1_title">{translations.en.feat_1_title}</h3>
+<p class="text-slate-400 text-sm leading-relaxed" data-i18n="feat_1_desc">{translations.en.feat_1_desc}</p>
+</div>
+<div class="p-8 bg-slate-950 border border-slate-800 rounded-xl flex flex-col gap-4">
+<div class="text-emerald-400 text-2xl font-bold" data-i18n="feat_2_metric">{translations.en.feat_2_metric}</div>
+<h3 class="text-xl font-bold" data-i18n="feat_2_title">{translations.en.feat_2_title}</h3>
+<p class="text-slate-400 text-sm leading-relaxed" data-i18n="feat_2_desc">{translations.en.feat_2_desc}</p>
+</div>
+<div class="p-8 bg-slate-950 border border-slate-800 rounded-xl flex flex-col gap-4">
+<div class="text-emerald-400 text-2xl font-bold" data-i18n="feat_3_metric">{translations.en.feat_3_metric}</div>
+<h3 class="text-xl font-bold" data-i18n="feat_3_title">{translations.en.feat_3_title}</h3>
+<p class="text-slate-400 text-sm leading-relaxed" data-i18n="feat_3_desc">{translations.en.feat_3_desc}</p>
+</div>
+</div>
+</section>
 
-	<!-- Contact Section -->
-	<section id="contact" class="py-24 bg-slate-950 text-slate-50 px-6 border-t border-slate-900">
-		<div class="max-w-3xl mx-auto text-center flex flex-col gap-6">
-			<h2 class="text-3xl md:text-5xl font-black tracking-tight" data-i18n="contact_heading">{translations.en.contact_heading}</h2>
-			<p class="text-slate-400 text-lg" data-i18n="contact_subheading">
-				{translations.en.contact_subheading}
-			</p>
-			<div class="mt-8">
-				<form id="lead-form" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto relative">
-					<input type="email" placeholder={translations.en.contact_placeholder} required class="px-4 py-3 bg-slate-900 border border-slate-800 rounded-lg focus:outline-none focus:border-emerald-500 flex-grow text-slate-100 transition-colors" id="contact-email" />
-					<button id="submit-btn" type="submit" class="px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg transition-all whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed" data-i18n="contact_btn">
-						{translations.en.contact_btn}
-					</button>
-				</form>
-				<div id="form-feedback" class="mt-4 text-sm font-semibold text-center hidden animate-fade-in"></div>
-			</div>
-		</div>
-	</section>
+<!-- Contact Section -->
+<section id="contact" class="py-24 bg-slate-950 text-slate-50 px-6 border-t border-slate-900">
+<div class="max-w-3xl mx-auto text-center flex flex-col gap-6">
+<h2 class="text-3xl md:text-5xl font-black tracking-tight" data-i18n="contact_heading">{translations.en.contact_heading}</h2>
+<p class="text-slate-400 text-lg" data-i18n="contact_subheading">
+{translations.en.contact_subheading}
+</p>
+<div class="mt-8">
+<form id="lead-form" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto relative">
+<input type="email" placeholder={translations.en.contact_placeholder} required class="px-4 py-3 bg-slate-900 border border-slate-800 rounded-lg focus:outline-none focus:border-emerald-500 flex-grow text-slate-100 transition-colors" id="contact-email" />
+<button id="submit-btn" type="submit" class="px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg transition-all whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed" data-i18n="contact_btn">
+{translations.en.contact_btn}
+</button>
+</form>
+<div id="form-feedback" class="mt-4 text-sm font-semibold text-center hidden animate-fade-in"></div>
+</div>
+</div>
+</section>
 </Layout>
-<!-- Script de traducción y control de leads B2B (Opción B) -->
+
 <script define:vars={{ translations }} is:inline>
-	// --- MÓDULO 1: MANEJO DE IDIOMA EN CLIENTE ---
-	let currentLang = localStorage.getItem('preferred-lang') || 'en';
+// --- MÓDULO 1: MANEJO DE IDIOMA EN CLIENTE ---
+let currentLang = localStorage.getItem('preferred-lang') || 'en';
+function updateLanguage(lang) {
+currentLang = lang;
+document.querySelectorAll('[data-i18n]').forEach((element) => {
+const key = element.getAttribute('data-i18n');
+if (key && translations[lang] && translations[lang][key]) {
+element.textContent = translations[lang][key];
+}
+});
+const emailInput = document.getElementById('contact-email');
+if (emailInput && translations[lang] && translations[lang].contact_placeholder) {
+emailInput.placeholder = translations[lang].contact_placeholder;
+}
+const btnEn = document.getElementById('btn-en');
+const btnEs = document.getElementById('btn-es');
+if (btnEn && btnEs) {
+if (lang === 'en') {
+btnEn.className = "text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer bg-emerald-500 text-slate-950 select-none";
+btnEs.className = "text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer text-slate-400 hover:text-white select-none";
+} else {
+btnEs.className = "text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer bg-emerald-500 text-slate-950 select-none";
+btnEn.className = "text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer text-slate-400 hover:text-white select-none";
+}
+}
+localStorage.setItem('preferred-lang', lang);
+}
+updateLanguage(currentLang);
+document.getElementById('btn-en')?.addEventListener('click', () => updateLanguage('en'));
+document.getElementById('btn-es')?.addEventListener('click', () => updateLanguage('es'));
 
-	function updateLanguage(lang) {
-		currentLang = lang;
-		
-		// Actualizar textos basados en data-i18n
-		document.querySelectorAll('[data-i18n]').forEach((element) => {
-			const key = element.getAttribute('data-i18n');
-			if (key && translations[lang] && translations[lang][key]) {
-				element.textContent = translations[lang][key];
-			}
-		});
+// --- MÓDULO 2: INTERCEPCIÓN B2B Y ENVÍO A WEBHOOK ---
+const leadForm = document.getElementById('lead-form');
+const emailInput = document.getElementById('contact-email');
+const submitBtn = document.getElementById('submit-btn');
+const feedback = document.getElementById('form-feedback');
+const blacklistedDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'live.com', 'icloud.com'];
 
-		// Actualizar placeholder de correo empresarial
-		const emailInput = document.getElementById('contact-email');
-		if (emailInput && translations[lang] && translations[lang].contact_placeholder) {
-			emailInput.placeholder = translations[lang].contact_placeholder;
-		}
+leadForm?.addEventListener('submit', async (e) => {
+e.preventDefault();
+if (!feedback || !submitBtn || !emailInput) return;
+feedback.classList.add('hidden');
+feedback.className = "mt-4 text-sm font-semibold text-center";
+const cleanEmail = emailInput.value.trim().toLowerCase();
+const domain = cleanEmail.split('@')[1]; // Mapeo de dominio corregido
 
-		// Cambiar clases del Switch periférico
-		const btnEn = document.getElementById('btn-en');
-		const btnEs = document.getElementById('btn-es');
-		
-		if (btnEn && btnEs) {
-			if (lang === 'en') {
-				btnEn.className = "text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer bg-emerald-500 text-slate-950 select-none";
-				btnEs.className = "text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer text-slate-400 hover:text-white select-none";
-			} else {
-				btnEs.className = "text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer bg-emerald-500 text-slate-950 select-none";
-				btnEn.className = "text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer text-slate-400 hover:text-white select-none";
-			}
-		}
+if (blacklistedDomains.includes(domain)) {
+feedback.textContent = translations[currentLang].form_error_domain;
+feedback.classList.remove('hidden');
+feedback.classList.add('text-rose-400');
+return;
+}
+submitBtn.disabled = true;
+const originalBtnText = submitBtn.textContent;
+submitBtn.textContent = translations[currentLang].form_sending;
 
-		localStorage.setItem('preferred-lang', lang);
-	}
+try {
+const WEBHOOK_URL = 'https://make.com';
+const response = await fetch(WEBHOOK_URL, {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({
+email: cleanEmail,
+lang: currentLang,
+source: 'agency_landing_mvp',
+timestamp: new Date().toISOString()
+})
+});
+if (response.ok) {
+feedback.textContent = translations[currentLang].form_success;
+feedback.classList.add('text-emerald-400');
+leadForm.reset();
+} else {
+throw new Error('Server response error');
+}
+} catch (error) {
+feedback.textContent = translations[currentLang].form_error_server;
+feedback.classList.add('text-rose-400');
+} finally {
+feedback.classList.remove('hidden');
+submitBtn.disabled = false;
+submitBtn.textContent = originalBtnText;
+}
+});
 
-	// Inicialización inmediata del DOM activo
-	updateLanguage(currentLang);
+// --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (EDICIÓN PERF) ---
+function orchestrateFacades() {
+const dFacade = document.getElementById('desktop-facade');
+const dInteractive = document.getElementById('desktop-interactive');
+if (dFacade && dInteractive) {
+const swapDesktop = () => {
+setTimeout(() => {
+dInteractive.classList.remove('opacity-0');
+dFacade.classList.add('opacity-0');
+setTimeout(() => dFacade.remove(), 500);
+}, 1500);
+};
+if ('requestIdleCallback' in window) {
+window.requestIdleCallback(swapDesktop);
+} else {
+window.addEventListener('load', swapDesktop);
+}
+}
 
-	document.getElementById('btn-en')?.addEventListener('click', () => updateLanguage('en'));
-	document.getElementById('btn-es')?.addEventListener('click', () => updateLanguage('es'));
-
-
-	// --- MÓDULO 2: INTERCEPCIÓN B2B Y ENVÍO A WEBHOOK ---
-	const leadForm = document.getElementById('lead-form');
-	const emailInput = document.getElementById('contact-email');
-	const submitBtn = document.getElementById('submit-btn');
-	const feedback = document.getElementById('form-feedback');
-
-	// Lista negra de consumo masivo para obligar leads corporativos premium
-	const blacklistedDomains = ['gmail.com', 'yahoo.com', 'hotmail.com', 'outlook.com', 'live.com', 'icloud.com'];
-
-	leadForm?.addEventListener('submit', async (e) => {
-		e.preventDefault();
-		if (!feedback || !submitBtn || !emailInput) return;
-
-		// Resetear contenedor de retroalimentación
-		feedback.classList.add('hidden');
-		feedback.className = "mt-4 text-sm font-semibold text-center";
-
-		const cleanEmail = emailInput.value.trim().toLowerCase();
-		const domain = cleanEmail.split('@')[1];
-
-		// Validar si el dominio es masivo o corporativo
-		if (blacklistedDomains.includes(domain)) {
-			feedback.textContent = translations[currentLang].form_error_domain;
-			feedback.classList.remove('hidden');
-			feedback.classList.add('text-rose-400');
-			return;
-		}
-
-		// Prevenir duplicación bloqueando UI
-		submitBtn.disabled = true;
-		const originalBtnText = submitBtn.textContent;
-		submitBtn.textContent = translations[currentLang].form_sending;
-
-		try {
-			// Enlace directo listo para tu webhook de automatización en Make/Zapier
-			const WEBHOOK_URL = 'https://make.com';
-
-			const response = await fetch(WEBHOOK_URL, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					email: cleanEmail,
-					lang: currentLang,
-					source: 'agency_landing_mvp',
-					timestamp: new Date().toISOString()
-				})
-			});
-
-			if (response.ok) {
-				// Éxito dinámico según idioma activo
-				feedback.textContent = translations[currentLang].form_success;
-				feedback.classList.add('text-emerald-400');
-				leadForm.reset();
-			} else {
-				throw new Error('Server response error');
-			}
-		} catch (error) {
-			// Alerta de red o servidor caído
-			feedback.textContent = translations[currentLang].form_error_server;
-			feedback.classList.add('text-rose-400');
-		} finally {
-			// Reactivar UI tras finalizar proceso asíncrono
-			feedback.classList.remove('hidden');
-			submitBtn.disabled = false;
-			submitBtn.textContent = originalBtnText;
-		}
-	});
+const mFacade = document.getElementById('mobile-facade');
+const mVideo = document.getElementById('mobile-video');
+if (mFacade && mVideo) {
+const swapMobile = () => {
+mVideo.preload = "auto";
+mVideo.play().then(() => {
+mFacade.classList.add('opacity-0');
+setTimeout(() => mFacade.remove(), 500);
+}).catch((err) => {
+console.warn("Autoplay blocked on mobile, keeping facade active.", err);
+});
+};
+if ('requestIdleCallback' in window) {
+window.requestIdleCallback(swapMobile);
+} else {
+window.addEventListener('load', swapMobile);
+}
+}
+}
+orchestrateFacades();
+document.addEventListener('astro:after-swap', orchestrateFacades);
 </script>
