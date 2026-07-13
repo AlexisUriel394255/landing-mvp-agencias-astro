@@ -293,22 +293,22 @@ const translations = {
     }
   });
 
-  // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (EDICIÓN SUPREMA 100/100) ---
+   // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (CALIBRACIÓN DE RENDIMIENTO MAESTRO) ---
   function orchestrateFacades() {
     const dFacade = document.getElementById('desktop-facade');
     const dInteractive = document.getElementById('desktop-interactive');
 
-    // Detectamos de forma estricta si el usuario está en Computadora (PC)
+    // Medimos si la pantalla pertenece a una Computadora (PC >= 768px)
     const isDesktop = window.innerWidth >= 768;
 
     if (dFacade && dInteractive && isDesktop) {
       const swapDesktop = () => {
-        // En PC metemos 5 segundos completos. El bot de PC medirá un TBT de CERO absoluto.
+        // En PC iniciamos de inmediato (0ms). El robot de 383kB es tan ligero que la PC lo vuela al instante.
         setTimeout(() => {
           dInteractive.classList.remove('opacity-0');
           dFacade.classList.add('opacity-0');
           setTimeout(() => dFacade.remove(), 500);
-        }, 5000);
+        }, 0);
       };
 
       if ('requestIdleCallback' in window) {
@@ -323,8 +323,7 @@ const translations = {
 
     if (mFacade && mVideo && !isDesktop) {
       const swapMobile = () => {
-        // En Celulares eliminamos el retraso por completo (0ms). 
-        // El video arranca de inmediato en background tirando el LCP al suelo.
+        // En celulares retrasamos el video 2.5 segundos. Así la pantalla estática se pinta de inmediato.
         setTimeout(() => {
           mVideo.preload = "auto";
           mVideo.play().then(() => {
@@ -333,7 +332,7 @@ const translations = {
           }).catch((err) => {
             console.warn("Autoplay blocked on mobile, keeping facade active.", err);
           });
-        }, 0); 
+        }, 2500);
       };
 
       if ('requestIdleCallback' in window) {
@@ -346,5 +345,6 @@ const translations = {
 
   orchestrateFacades();
   document.addEventListener('astro:after-swap', orchestrateFacades);
+
 
 </script>
