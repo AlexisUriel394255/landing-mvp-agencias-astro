@@ -1,46 +1,30 @@
-# Astro Starter Kit: Basics
+# MVP Landing Page Premium para Agencias Digitales
 
-```sh
-npm create astro@latest -- --template basics
-```
+MVP bilingüe (EN/ES) de alta conversión diseñado exclusivamente para agencias digitales. Construido con una arquitectura Headless acoplada a la nube para garantizar una puntuación de 100% en Core Web Vitals y PageSpeed.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## 🚀 Stack Tecnológico
+- **Frontend:** Astro (SSG nativo para rendimiento extremo)
+- **Estilos:** Tailwind CSS v4 via Vite plugin
+- **Interactividad 3D:** React + TypeScript estricto (Componente `<RobotViewer />`)
+- **Headless CMS:** Sanity CMS (`@sanity/client`) con esquemas bilingües en tiempo de ejecución
 
-## 🚀 Project Structure
+## 🛠️ Arquitectura y Características
+- **Traducción Reactiva:** Sistema dinámico que conmuta el DOM instantáneamente mediante `data-attributes` e inyección de variables (`define:vars`), persistiendo la preferencia en `localStorage`.
+- **Formulario Inteligente B2B:** Script del cliente con interceptor nativo, sanitización de entradas y bloqueo estricto de dominios masivos (`gmail`, `yahoo`, etc.) para asegurar leads corporativos puros.
+- **Contenedores Elásticos:** Ajuste responsivo `aspect-square` para optimizar la cámara del viewport 3D de Spline sin cortes.
 
-Inside of your Astro project, you'll see the following folders and files:
+## 💻 Desarrollo Local
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
-```
-
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+1. Instalar dependencias en la raíz:
+   ```bash
+   npm install
+   ```
+2. Levantar el entorno de la Landing Page:
+   ```bash
+   npm run dev
+   ```
+3. (Opcional) Levantar el panel local del CMS:
+   ```bash
+   cd agencias-mvp-cms
+   npm run dev
+   ```
