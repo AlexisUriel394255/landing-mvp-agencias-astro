@@ -1,5 +1,5 @@
 ---
-export const prerender = true;
+export const prerender = false; // Cambiado a FALSE para que el servidor evalúe el dispositivo en vivo
 
 import Layout from '../layouts/Layout.astro';
 import RobotViewer from '../components/3D/RobotViewer.jsx';
@@ -13,11 +13,14 @@ const client = createClient({
   apiVersion: '2026-03-12',
 });
 
-// Consulta nativa en tiempo de ejecución
+// DETECCIÓN RADICAL EN SERVIDOR: Evaluamos si es celular antes de enviar el HTML
+const userAgent = Astro.request.headers.get('user-agent') || '';
+const isMobileServer = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
+
+// Consulta nativa para los textos
 const cmsDataArray = await client.fetch(`*[_type == "landingContent"]`);
 const cms = cmsDataArray || {};
 
-// Mapeo estricto al objeto de traducciones para alimentar el script cliente
 const translations = {
   en: {
     hero_badge: cms.hero_badge_en || "Exclusive for Digital Agencies",
@@ -129,9 +132,9 @@ const translations = {
           <div id="desktop-facade" class="absolute inset-0 z-20 transition-opacity duration-500 ease-out">
             <img src="/images/robot-facade.png" alt="Robot Render Facade" class="w-full h-full object-contain" fetchpriority="high" loading="eager" />
           </div>
-          <!-- Canvas 3D Real: Hidratación controlada únicamente en cliente para mitigar el TBT -->
+          <!-- Canvas 3D Real: Hidratado únicamente si NO es un dispositivo móvil detectado por el servidor -->
           <div id="desktop-interactive" class="absolute inset-0 z-10 opacity-0 transition-opacity duration-700 ease-in">
-            <RobotViewer client:only="react" />
+            {!isMobileServer && <RobotViewer client:only="react" />}
           </div>
         </div>
 
@@ -295,19 +298,18 @@ const translations = {
     }
   });
 
-    // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (FILTRO NATIVO SEGURO) ---
+  // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (FILTRADO POR INYECCIÓN DE SERVIDOR) ---
   function orchestrateFacades() {
     const dFacade = document.getElementById('desktop-facade');
     const dInteractive = document.getElementById('desktop-interactive');
     const mFacade = document.getElementById('mobile-facade');
     const mVideo = document.getElementById('mobile-video');
 
-    // Evaluamos de manera segura si los elementos existen en el DOM actual
-    if (dFacade && dInteractive && window.computedStyleMap) {
+    // Si el contenedor interactivo de escritorio existe en el DOM (significa que el servidor aprobó la PC)
+    if (dFacade && dInteractive) {
       const swapDesktop = () => {
-        // En PC, retrasamos la carga de Spline 4.5 segundos para vaciar el TBT en Lighthouse
+        // Delay optimizado de 4.5s para vaciar por completo el TBT de escritorio
         setTimeout(() => {
-          if (!dInteractive) return;
           dInteractive.classList.remove('opacity-0');
           dFacade.classList.add('opacity-0');
           setTimeout(() => dFacade.remove(), 500);
@@ -321,9 +323,10 @@ const translations = {
       }
     }
 
+    // Si el contenedor de video móvil existe en el DOM
     if (mFacade && mVideo) {
       const swapMobile = () => {
-        // En celulares, corremos el video nativo diferido a 1.5s (tu punto de rendimiento más alto)
+        // Activación limpia a 1.5s que no compite con el FCP/LCP inicial de celulares
         setTimeout(() => {
           mVideo.preload = "auto";
           mVideo.play().then(() => {
@@ -345,5 +348,4 @@ const translations = {
 
   orchestrateFacades();
   document.addEventListener('astro:after-swap', orchestrateFacades);
-
 </script>
