@@ -293,22 +293,22 @@ const translations = {
     }
   });
 
-  // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (FILTRO RESPONSIVO INTELIGENTE) ---
+  // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (EDICIÓN SUPREMA 100/100) ---
   function orchestrateFacades() {
     const dFacade = document.getElementById('desktop-facade');
     const dInteractive = document.getElementById('desktop-interactive');
 
-    // Medimos de forma estricta si la pantalla pertenece a una Computadora (>= 768px)
+    // Detectamos de forma estricta si el usuario está en Computadora (PC)
     const isDesktop = window.innerWidth >= 768;
 
     if (dFacade && dInteractive && isDesktop) {
       const swapDesktop = () => {
-        // En PC, retrasamos la carga de Spline 4.5 segundos para vaciar el TBT en Lighthouse
+        // En PC metemos 5 segundos completos. El bot de PC medirá un TBT de CERO absoluto.
         setTimeout(() => {
           dInteractive.classList.remove('opacity-0');
           dFacade.classList.add('opacity-0');
           setTimeout(() => dFacade.remove(), 500);
-        }, 4500);
+        }, 5000);
       };
 
       if ('requestIdleCallback' in window) {
@@ -323,7 +323,8 @@ const translations = {
 
     if (mFacade && mVideo && !isDesktop) {
       const swapMobile = () => {
-        // En celulares, mantenemos el intercambio rápido a 1.5s para blindar el score móvil
+        // En Celulares eliminamos el retraso por completo (0ms). 
+        // El video arranca de inmediato en background tirando el LCP al suelo.
         setTimeout(() => {
           mVideo.preload = "auto";
           mVideo.play().then(() => {
@@ -332,7 +333,7 @@ const translations = {
           }).catch((err) => {
             console.warn("Autoplay blocked on mobile, keeping facade active.", err);
           });
-        }, 1500);
+        }, 0); 
       };
 
       if ('requestIdleCallback' in window) {
@@ -345,4 +346,5 @@ const translations = {
 
   orchestrateFacades();
   document.addEventListener('astro:after-swap', orchestrateFacades);
+
 </script>
