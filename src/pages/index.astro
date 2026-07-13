@@ -5,18 +5,22 @@ import translations from '../data/translations.json';
 ---
 
 <Layout title="Premium Web Development for High-Converting Agencies">
-	<!-- Switch Flotante de Idioma (Fijado en la esquina superior derecha) -->
-	<div class="fixed top-6 right-6 z-50 bg-slate-900/80 backdrop-blur-md border border-slate-800 px-3 py-1.5 rounded-full flex items-center gap-1 shadow-2xl">
-		<button id="btn-en" class="text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer bg-emerald-500 text-slate-950">
-			EN
-		</button>
-		<button id="btn-es" class="text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer text-slate-400 hover:text-white">
-			ES
-		</button>
-	</div>
-
-	<!-- Hero Section -->
+	<!-- Hero Section con posicionamiento relativo -->
 	<section class="relative min-h-screen flex items-center bg-slate-950 text-slate-50 px-6 overflow-hidden">
+		
+		<!-- Contenedor invisible que mide el 100% del ancho de la pantalla -->
+		<div class="absolute top-6 left-0 w-screen z-50 pointer-events-none">
+			<!-- Botones posicionados al extremo derecho absoluto con margen mínimo al scrollbar -->
+			<div class="absolute right-4 md:right-6 lg:right-8 bg-slate-900/90 backdrop-blur-md border border-slate-800 px-3 py-1.5 rounded-full flex items-center gap-1 shadow-2xl transition-all hover:border-slate-700 pointer-events-auto">
+				<button id="btn-en" class="text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer bg-emerald-500 text-slate-950 select-none">
+					EN
+				</button>
+				<button id="btn-es" class="text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer text-slate-400 hover:text-white select-none">
+					ES
+				</button>
+			</div>
+		</div>
+
 		<div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
 			
 			<!-- Left: Value Proposition -->
@@ -33,7 +37,7 @@ import translations from '../data/translations.json';
 				<p class="text-lg text-slate-400 leading-relaxed" data-i18n="hero_desc">
 					Don't let a bad PageSpeed score ruin your agency's reputation. We build ultra-fast, 100% score landing pages powered by Astro & headless architecture. 
 				</p>
-				<!-- Contenedor con alineación corregida para evitar rupturas de línea -->
+				<!-- Contenedor balanceado y con tamaño responsivo impecable -->
 				<div class="flex flex-col sm:flex-row gap-4 mt-4 items-stretch sm:items-center w-full">
 					<a href="#contact" class="flex items-center justify-center px-4 md:px-5 py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg transition-all text-center shadow-lg shadow-emerald-500/20 text-sm md:text-base whitespace-nowrap min-h-[56px] flex-1 sm:flex-initial" data-i18n="hero_btn_audit">
 						Book a 15-Min Speed Audit
@@ -104,10 +108,9 @@ import translations from '../data/translations.json';
 	</section>
 </Layout>
 
-<!-- Script reactivo utilizando el JSON estructurado -->
+<!-- Script de traducción -->
 <script define:vars={{ translations }} is:inline>
 	function updateLanguage(lang) {
-		// 1. Traducir textos estándar
 		document.querySelectorAll('[data-i18n]').forEach((element) => {
 			const key = element.getAttribute('data-i18n');
 			if (key && translations[lang] && translations[lang][key]) {
@@ -115,34 +118,30 @@ import translations from '../data/translations.json';
 			}
 		});
 
-		// 2. Traducir el placeholder del email
 		const emailInput = document.getElementById('contact-email');
 		if (emailInput && translations[lang] && translations[lang].contact_placeholder) {
 			emailInput.placeholder = translations[lang].contact_placeholder;
 		}
 
-		// 3. Controlar estilos activos del Switch
 		const btnEn = document.getElementById('btn-en');
 		const btnEs = document.getElementById('btn-es');
 		
 		if (btnEn && btnEs) {
 			if (lang === 'en') {
-				btnEn.className = "text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer bg-emerald-500 text-slate-950";
-				btnEs.className = "text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer text-slate-400 hover:text-white";
+				btnEn.className = "text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer bg-emerald-500 text-slate-950 select-none";
+				btnEs.className = "text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer text-slate-400 hover:text-white select-none";
 			} else {
-				btnEs.className = "text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer bg-emerald-500 text-slate-950";
-				btnEn.className = "text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer text-slate-400 hover:text-white";
+				btnEs.className = "text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer bg-emerald-500 text-slate-950 select-none";
+				btnEn.className = "text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer text-slate-400 hover:text-white select-none";
 			}
 		}
 
 		localStorage.setItem('preferred-lang', lang);
 	}
 
-	// Inicializar preferencia guardada
 	const savedLang = localStorage.getItem('preferred-lang') || 'en';
 	updateLanguage(savedLang);
 
-	// Manejadores de clics independientes
 	document.getElementById('btn-en')?.addEventListener('click', () => updateLanguage('en'));
 	document.getElementById('btn-es')?.addEventListener('click', () => updateLanguage('es'));
 </script>
