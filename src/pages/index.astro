@@ -295,18 +295,19 @@ const translations = {
     }
   });
 
-  // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (CALIBRACIÓN ESTABLE) ---
+    // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (FILTRO NATIVO SEGURO) ---
   function orchestrateFacades() {
     const dFacade = document.getElementById('desktop-facade');
     const dInteractive = document.getElementById('desktop-interactive');
+    const mFacade = document.getElementById('mobile-facade');
+    const mVideo = document.getElementById('mobile-video');
 
-    // Detección por ancho de pantalla nativo
-    const isDesktop = window.innerWidth >= 768;
-
-    if (dFacade && dInteractive && isDesktop) {
+    // Evaluamos de manera segura si los elementos existen en el DOM actual
+    if (dFacade && dInteractive && window.computedStyleMap) {
       const swapDesktop = () => {
         // En PC, retrasamos la carga de Spline 4.5 segundos para vaciar el TBT en Lighthouse
         setTimeout(() => {
+          if (!dInteractive) return;
           dInteractive.classList.remove('opacity-0');
           dFacade.classList.add('opacity-0');
           setTimeout(() => dFacade.remove(), 500);
@@ -320,12 +321,9 @@ const translations = {
       }
     }
 
-    const mFacade = document.getElementById('mobile-facade');
-    const mVideo = document.getElementById('mobile-video');
-
-    if (mFacade && mVideo && !isDesktop) {
+    if (mFacade && mVideo) {
       const swapMobile = () => {
-        // En celulares, mantenemos el intercambio a 1.5s para no bloquear la interactividad
+        // En celulares, corremos el video nativo diferido a 1.5s (tu punto de rendimiento más alto)
         setTimeout(() => {
           mVideo.preload = "auto";
           mVideo.play().then(() => {
@@ -347,4 +345,5 @@ const translations = {
 
   orchestrateFacades();
   document.addEventListener('astro:after-swap', orchestrateFacades);
+
 </script>
