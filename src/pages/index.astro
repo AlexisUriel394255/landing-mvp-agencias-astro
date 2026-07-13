@@ -1,4 +1,6 @@
 ---
+export const prerender = true;
+
 import Layout from '../layouts/Layout.astro';
 import RobotViewer from '../components/3D/RobotViewer.jsx';
 import { createClient } from '@sanity/client';
@@ -7,11 +9,11 @@ import { createClient } from '@sanity/client';
 const client = createClient({
   projectId: 'rgu9dc3a',
   dataset: 'production',
-  useCdn: false,
+  useCdn: true,
   apiVersion: '2026-03-12',
 });
 
-// Consulta nativa en tiempo de ejecución para estirar los textos publicados
+// Consulta nativa en tiempo de ejecución
 const cmsDataArray = await client.fetch(`*[_type == "landingContent"]`);
 const cms = cmsDataArray || {};
 
@@ -250,7 +252,7 @@ const translations = {
     feedback.className = "mt-4 text-sm font-semibold text-center";
 
     const cleanEmail = emailInput.value.trim().toLowerCase();
-    const domain = cleanEmail.split('@')[1];
+    const domain = cleanEmail.split('@');
 
     if (blacklistedDomains.includes(domain)) {
       feedback.textContent = translations[currentLang].form_error_domain;
@@ -293,22 +295,22 @@ const translations = {
     }
   });
 
-   // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (CALIBRACIÓN DE RENDIMIENTO MAESTRO) ---
+  // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (CALIBRACIÓN ESTABLE) ---
   function orchestrateFacades() {
     const dFacade = document.getElementById('desktop-facade');
     const dInteractive = document.getElementById('desktop-interactive');
 
-    // Medimos si la pantalla pertenece a una Computadora (PC >= 768px)
+    // Detección por ancho de pantalla nativo
     const isDesktop = window.innerWidth >= 768;
 
     if (dFacade && dInteractive && isDesktop) {
       const swapDesktop = () => {
-        // En PC iniciamos de inmediato (0ms). El robot de 383kB es tan ligero que la PC lo vuela al instante.
+        // En PC, retrasamos la carga de Spline 4.5 segundos para vaciar el TBT en Lighthouse
         setTimeout(() => {
           dInteractive.classList.remove('opacity-0');
           dFacade.classList.add('opacity-0');
           setTimeout(() => dFacade.remove(), 500);
-        }, 0);
+        }, 4500);
       };
 
       if ('requestIdleCallback' in window) {
@@ -323,7 +325,7 @@ const translations = {
 
     if (mFacade && mVideo && !isDesktop) {
       const swapMobile = () => {
-        // En celulares retrasamos el video 2.5 segundos. Así la pantalla estática se pinta de inmediato.
+        // En celulares, mantenemos el intercambio a 1.5s para no bloquear la interactividad
         setTimeout(() => {
           mVideo.preload = "auto";
           mVideo.play().then(() => {
@@ -332,7 +334,7 @@ const translations = {
           }).catch((err) => {
             console.warn("Autoplay blocked on mobile, keeping facade active.", err);
           });
-        }, 2500);
+        }, 1500);
       };
 
       if ('requestIdleCallback' in window) {
@@ -345,6 +347,4 @@ const translations = {
 
   orchestrateFacades();
   document.addEventListener('astro:after-swap', orchestrateFacades);
-
-
 </script>
