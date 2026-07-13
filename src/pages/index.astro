@@ -293,19 +293,22 @@ const translations = {
     }
   });
 
-  // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (CALIBRACIÓN PERFECTA 1.5S) ---
+  // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (FILTRO RESPONSIVO INTELIGENTE) ---
   function orchestrateFacades() {
     const dFacade = document.getElementById('desktop-facade');
     const dInteractive = document.getElementById('desktop-interactive');
 
-    if (dFacade && dInteractive) {
+    // Medimos de forma estricta si la pantalla pertenece a una Computadora (>= 768px)
+    const isDesktop = window.innerWidth >= 768;
+
+    if (dFacade && dInteractive && isDesktop) {
       const swapDesktop = () => {
-        // Calibración exacta a 1.5s para unificar el rendimiento móvil y de escritorio
+        // En PC, retrasamos la carga de Spline 4.5 segundos para vaciar el TBT en Lighthouse
         setTimeout(() => {
           dInteractive.classList.remove('opacity-0');
           dFacade.classList.add('opacity-0');
           setTimeout(() => dFacade.remove(), 500);
-        }, 1500);
+        }, 4500);
       };
 
       if ('requestIdleCallback' in window) {
@@ -318,9 +321,9 @@ const translations = {
     const mFacade = document.getElementById('mobile-facade');
     const mVideo = document.getElementById('mobile-video');
 
-    if (mFacade && mVideo) {
+    if (mFacade && mVideo && !isDesktop) {
       const swapMobile = () => {
-        // Calibración síncrona a 1.5s para no retrasar el hilo interactivo en celulares
+        // En celulares, mantenemos el intercambio rápido a 1.5s para blindar el score móvil
         setTimeout(() => {
           mVideo.preload = "auto";
           mVideo.play().then(() => {
