@@ -106,18 +106,18 @@ const translations = {
         <div class="absolute inset-0 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
         
         <!-- ==================== BLOQUE DE ESCRITORIO STABLE ==================== -->
-        <div class="w-full h-full relative hidden sm:block min-h-[400px] lg:min-h-[600px]">
+        <div class="w-full h-full relative hidden lg:block min-h-[400px] lg:min-h-[600px]">
           <div id="desktop-facade" class="absolute inset-0 z-20 transition-opacity duration-500 ease-out pointer-events-none">
             <img src="/images/robot-facade.webp" alt="Robot Render Facade" class="w-full h-full object-contain" fetchpriority="high" loading="eager" decoding="async" />
           </div>
-          <!-- Se usa client:load porque el componente controla internamente su retraso pasivo -->
+          <!-- CORRECCIÓN OPTIMIZADA: client:only="react" para asegurar inmunidad frente a bots de Google -->
           <div id="desktop-interactive" class="absolute inset-0 z-10 opacity-0 transition-opacity duration-700 ease-in">
-            <RobotViewer client:load />
+            <RobotViewer client:only="react" />
           </div>
         </div>
 
         <!-- ==================== BLOQUE DE MÓVIL ==================== -->
-        <div class="w-full h-full relative block sm:hidden">
+        <div class="w-full h-full relative block lg:hidden">
           <div id="mobile-facade" class="absolute inset-0 z-20 transition-opacity duration-500 ease-out">
             <img src="/images/video-mobile-facade.webp" alt="Video Preview Facade" class="w-full h-full object-cover rounded-2xl" fetchpriority="high" loading="eager" decoding="async" />
           </div>
@@ -266,7 +266,7 @@ const translations = {
     const dInteractive = document.getElementById('desktop-interactive');
     const mFacade = document.getElementById('mobile-facade');
     const mVideo = document.getElementById('mobile-video');
-    const isDesktop = window.innerWidth >= 640; // Breakpoint 'sm' emparejado con Tailwind
+    const isDesktop = window.innerWidth >= 1024; // CORRECCIÓN: Breakpoint emparejado con 'lg' de Tailwind (1024px)
 
     // --- CONTROL PARA ESCRITORIO (PC) ---
     if (dFacade && dInteractive && isDesktop) {
@@ -317,10 +317,14 @@ const translations = {
     }
   }
 
-  if (document.readyState === 'complete') { 
-    orchestrateFacades(); 
-  } else { 
-    window.addEventListener('DOMContentLoaded', orchestrateFacades, { once: true });
+  // CORRECCIÓN MÁXIMA DE RENDIMIENTO: Evita duplicar listeners infinitamente tras swaps de Astro
+  if (!window.__facadesOrchestrated) {
+    if (document.readyState === 'complete') { 
+      orchestrateFacades(); 
+    } else { 
+      window.addEventListener('DOMContentLoaded', orchestrateFacades, { once: true });
+    }
+    document.addEventListener('astro:after-swap', orchestrateFacades);
+    window.__facadesOrchestrated = true;
   }
-  document.addEventListener('astro:after-swap', orchestrateFacades);
 </script>
