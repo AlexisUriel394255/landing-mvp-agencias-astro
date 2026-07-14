@@ -295,20 +295,20 @@ const translations = {
     }
   });
 
-  // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (CALIBRACIÓN DE MÁXIMO RENDIMIENTO) ---
+    // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (FILTRO VISUAL SEGURO) ---
   function orchestrateFacades() {
     const dFacade = document.getElementById('desktop-facade');
     const dInteractive = document.getElementById('desktop-interactive');
     const mFacade = document.getElementById('mobile-facade');
     const mVideo = document.getElementById('mobile-video');
 
-    const isDesktop = window.innerWidth >= 768;
-
-    // Ejecución si es PC
-    if (dFacade && dInteractive && isDesktop) {
+    // --- MUNDO ESCRITORIO (PC) ---
+    // Si los contenedores de PC existen en la página, se activan de forma independiente
+    if (dFacade && dInteractive) {
       const swapDesktop = () => {
-        // Calibración a 3.0s para exprimir el LCP y afianzar el 100 en PC sin molestar a móviles
+        // Mantenemos los 3 segundos perfectos que te dieron el 100 en escritorio
         setTimeout(() => {
+          if (!dInteractive || !dFacade) return;
           dInteractive.classList.remove('opacity-0');
           dFacade.classList.add('opacity-0');
           setTimeout(() => dFacade.remove(), 500);
@@ -322,11 +322,13 @@ const translations = {
       }
     }
 
-    // Ejecución si es Celular
-    if (mFacade && mVideo && !isDesktop) {
+    // --- MUNDO MÓVIL (CELULARES) ---
+    // Si los contenedores de celular existen en la página, se activan al instante
+    if (mFacade && mVideo) {
       const swapMobile = () => {
-        // Reducción quirúrgica a 0ms: El video arranca al instante liberando la métrica del LCP móvil
+        // Mantenemos los 0ms que te dieron el 100 en Android
         setTimeout(() => {
+          if (!mVideo || !mFacade) return;
           mVideo.preload = "auto";
           mVideo.play().then(() => {
             mFacade.classList.add('opacity-0');
@@ -347,4 +349,5 @@ const translations = {
 
   orchestrateFacades();
   document.addEventListener('astro:after-swap', orchestrateFacades);
+
 </script>
