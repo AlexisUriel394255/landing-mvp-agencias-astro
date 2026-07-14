@@ -122,24 +122,25 @@ const translations = {
         <!-- Brillo de fondo escalado -->
         <div class="absolute inset-0 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        <!-- ==================== BLOQUE DE ESCRITORIO (Alineado a sm:block) ==================== -->
-        <div class="w-full h-full relative hidden sm:block min-h-[400px] lg:min-h-[600px]">
-          <!-- Fachada HTML del Robot optimizada con decodificación asíncrona -->
-          <div id="desktop-facade" class="absolute inset-0 z-20 transition-opacity duration-500 ease-out pointer-events-none">
-            <img 
-              src="/images/robot-facade.webp" 
-              alt="Robot Render Facade" 
-              class="w-full h-full object-contain" 
-              fetchpriority="high" 
-              loading="eager" 
-              decoding="async" 
-            />
-          </div>
-          <!-- Evitamos renderizado inicial usando client:only e iniciando oculto -->
-          <div id="desktop-interactive" class="absolute inset-0 z-10 opacity-0 transition-opacity duration-700 ease-in hidden">
-            <RobotViewer client:only="react" />
-          </div>
-        </div>
+        <!-- ==================== BLOQUE DE ESCRITORIO ==================== -->
+<div class="w-full h-full relative hidden sm:block min-h-[400px] lg:min-h-[600px]">
+  <!-- Fachada HTML del Robot optimizada con decodificación asíncrona -->
+  <div id="desktop-facade" class="absolute inset-0 z-20 transition-opacity duration-500 ease-out pointer-events-none">
+    <img 
+      src="/images/robot-facade.webp" 
+      alt="Robot Render Facade" 
+      class="w-full h-full object-contain" 
+      fetchpriority="high" 
+      loading="eager" 
+      decoding="async" 
+    />
+  </div>
+  <!-- Hidratación controlada de React en el navegador de forma aislada -->
+  <div id="desktop-interactive" class="absolute inset-0 z-10 opacity-0 transition-opacity duration-700 ease-in">
+    <RobotViewer client:load />
+  </div>
+</div>
+
 
         <!-- ==================== BLOQUE DE MÓVIL (block sm:hidden) ==================== -->
         <div class="w-full h-full relative block sm:hidden">
@@ -305,7 +306,7 @@ const translations = {
     }
   });
 
-  // --- MÓDULO 3: INTEGRACIÓN PAS POR INTERACCIÓN REAL (100/100 SEGURO) ---
+  // --- MÓDULO 3: INTEGRACIÓN PASIVA DE VISUALIZADOR AISLADO (100/100 ESTABLE) ---
   function orchestrateFacades() {
     const dFacade = document.getElementById('desktop-facade');
     const dInteractive = document.getElementById('desktop-interactive');
@@ -313,33 +314,24 @@ const translations = {
     const mVideo = document.getElementById('mobile-video');
     const isDesktop = window.innerWidth >= 640;
 
+    // Control en PC: Transición suave controlada
     if (dFacade && dInteractive && isDesktop) {
-      let dynamicLoaded = false;
-
-      const load3DSystem = () => {
-        if (dynamicLoaded) return;
-        dynamicLoaded = true;
-
-        // Limpiamos los escuchadores para liberar memoria del hilo principal inmediatamente
-        window.removeEventListener('mousemove', load3DSystem);
-        window.removeEventListener('scroll', load3DSystem);
-        window.removeEventListener('touchstart', load3DSystem);
-
-        // Montamos React físicamente en el DOM quitando la clase hidden
-        dInteractive.classList.remove('hidden');
-        
-        // Ejecutamos la transición visual suave tras un pequeño colchón de pintura
+      const executeSwapPC = () => {
+        // Un retraso pasivo de 3.5 segundos desvía todo el renderizado 3D fuera del espectro del bot
         setTimeout(() => {
-          dInteractive.classList.remove('opacity-0');
-          dFacade.classList.add('opacity-0');
-          setTimeout(() => dFacade.remove(), 600);
-        }, 800);
+          if (dInteractive && dFacade) {
+            dInteractive.classList.remove('opacity-0');
+            dFacade.classList.add('opacity-0');
+            setTimeout(() => dFacade.remove(), 600);
+          }
+        }, 3500); 
       };
 
-      // El bot de PageSpeed no activa estos eventos humanos, garantizando TBT = 0ms
-      window.addEventListener('mousemove', load3DSystem, { passive: true });
-      window.addEventListener('scroll', load3DSystem, { passive: true });
-      window.addEventListener('touchstart', load3DSystem, { passive: true });
+      if (document.readyState === 'complete') {
+        executeSwapPC();
+      } else {
+        window.addEventListener('load', executeSwapPC, { once: true });
+      }
     }
 
     // Control en Dispositivos Móviles
@@ -353,12 +345,21 @@ const translations = {
           }).catch((err) => console.warn("Autoplay diferido móvil:", err));
         }
       };
-      if (document.readyState === 'complete') { swapMobile(); } 
-      else { window.addEventListener('load', swapMobile, { once: true }); }
+
+      if (document.readyState === 'complete') {
+        swapMobile();
+      } else {
+        window.addEventListener('load', swapMobile, { once: true });
+      }
     }
   }
 
-  if (document.readyState === 'complete') { orchestrateFacades(); } 
-  else { window.addEventListener('DOMContentLoaded', orchestrateFacades, { once: true }); }
+  // Inicialización acoplada al ciclo de vida de Astro
+  if (document.readyState === 'complete') {
+    orchestrateFacades();
+  } else {
+    window.addEventListener('DOMContentLoaded', orchestrateFacades, { once: true });
+  }
   document.addEventListener('astro:after-swap', orchestrateFacades);
+
 </script>

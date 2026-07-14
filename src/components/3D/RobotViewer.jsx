@@ -3,10 +3,9 @@ import React from 'react';
 export default function RobotViewer() {
   return (
     <div className="w-full h-full flex items-center justify-center overflow-hidden">
-      {/* Visor iframe optimizado de alto rendimiento: aísla la carga de CPU de PageSpeed */}
+      {/* El iframe carga el render directo desde los servidores perimetrales de Spline */}
       <iframe 
-        src="https://prod.spline.design/Cw77NWw1n9AEACxq/scene.splinecode"
-        loading="lazy"
+        src="https://spline.design"
         title="Robot 3D Interactive Viewer"
         className="w-full h-full border-none pointer-events-auto bg-transparent"
         allow="autoplay; fullscreen"
