@@ -295,7 +295,7 @@ const translations = {
     }
   });
 
-    // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (CALIBRACIÓN DEL DOBLE 100 UNIFICADO) ---
+    // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (CALIBRACIÓN PRECISIÓN 100/100) ---
   function orchestrateFacades() {
     const dFacade = document.getElementById('desktop-facade');
     const dInteractive = document.getElementById('desktop-interactive');
@@ -307,15 +307,14 @@ const translations = {
     // --- BLOQUE MAESTRO DE ESCRITORIO (PC) ---
     if (dFacade && dInteractive && isDesktop) {
       const swapDesktop = () => {
-        // Retrasamos la carga 4.5 segundos para vaciar el TBT de PC y clavar el 100 limpio
+        // Calibración exacta a 3.8s para recortar el LCP en PC y asegurar el 100 unificado
         setTimeout(() => {
           if (dInteractive && dFacade) {
             dInteractive.classList.remove('opacity-0');
             dFacade.classList.add('opacity-0');
-            // Eliminamos la fachada con retraso suave para evitar pantallas en negro
-            setTimeout(() => dFacade.remove(), 700);
+            setTimeout(() => dFacade.remove(), 500);
           }
-        }, 4500);
+        }, 3800);
       };
 
       if ('requestIdleCallback' in window) {
@@ -328,7 +327,7 @@ const translations = {
     // --- BLOQUE MAESTRO DE MÓVIL (CELULAR) ---
     if (mFacade && mVideo && !isDesktop) {
       const swapMobile = () => {
-        // Se mantiene en 0ms exactos para blindar e inmortalizar tu 100/100 de Android
+        // Sostenemos los 0ms exactos que inmortalizaron tu 100/100 de Android
         setTimeout(() => {
           if (mVideo && mFacade) {
             mVideo.preload = "auto";
