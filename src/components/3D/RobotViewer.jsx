@@ -1,16 +1,20 @@
-import Spline from '@splinetool/react-spline';
+import React, { lazy, Suspense } from 'react';
+
+// Importación dinámica asíncrona para eliminar el código pesado de Spline del chunk principal
+const Spline = lazy(() => import('@splinetool/react-spline'));
 
 export default function RobotViewer() {
   return (
-    <div className="relative w-full h-[400px] sm:h-[450px] lg:h-[600px] flex items-center justify-center overflow-hidden rounded-2xl bg-slate-900/40 border border-slate-800/50 backdrop-blur-sm z-10 px-4 md:px-0">
-      
-      {/* El canvas carga directo y limpio apuntando a tu robot real de 383kB */}
+    <div className="relative w-full h-[400px] sm:h-[450px] lg:h-[600px] flex items-center justify-center">
+      {/* Contenedor interno limpio */}
       <div className="w-full h-full">
-        <Spline 
-          scene="https://prod.spline.design/Cw77NWw1n9AEACxq/scene.splinecode" 
-        />
+        {/* Suspense maneja la carga asíncrona sin congelar el Main Thread de la CPU */}
+        <Suspense fallback={null}>
+          <Spline 
+            scene="https://prod.spline.design/Cw77NWw1n9AEACxq/scene.splinecode" 
+          />
+        </Suspense>
       </div>
-
     </div>
   );
 }

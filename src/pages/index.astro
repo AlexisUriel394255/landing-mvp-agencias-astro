@@ -1,6 +1,5 @@
 ---
 export const prerender = true; // Sostiene la velocidad estática instantánea que te dio el 100 en Android
-
 import Layout from '../layouts/Layout.astro';
 import RobotViewer from '../components/3D/RobotViewer.jsx';
 import { createClient } from '@sanity/client';
@@ -107,6 +106,7 @@ const translations = {
         <p class="text-lg text-slate-400 leading-relaxed" data-i18n="hero_desc">
           {translations.en.hero_desc}
         </p>
+        
         <!-- Contenedor balanceado y con tamaño responsivo impecable -->
         <div class="flex flex-col sm:flex-row gap-4 mt-4 items-stretch sm:items-center w-full">
           <a href="#contact" class="flex items-center justify-center px-4 md:px-5 py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg transition-all text-center shadow-lg shadow-emerald-500/20 text-sm md:text-base whitespace-nowrap min-h-[56px] flex-1 sm:flex-initial" data-i18n="hero_btn_audit">
@@ -125,9 +125,16 @@ const translations = {
 
         <!-- ==================== BLOQUE DE ESCRITORIO (Alineado a sm:block) ==================== -->
         <div class="w-full h-full relative hidden sm:block">
-          <!-- Fachada HTML del Robot apuntando a tu nuevo archivo .webp en public -->
+          <!-- Fachada HTML del Robot optimizada con decodificación asíncrona -->
           <div id="desktop-facade" class="absolute inset-0 z-20 transition-opacity duration-500 ease-out">
-            <img src="/images/robot-facade.webp" alt="Robot Render Facade" class="w-full h-full object-contain" fetchpriority="high" loading="eager" />
+            <img 
+              src="/images/robot-facade.webp" 
+              alt="Robot Render Facade" 
+              class="w-full h-full object-contain" 
+              fetchpriority="high" 
+              loading="eager" 
+              decoding="async" 
+            />
           </div>
           <!-- Canvas 3D Real: Hidratado únicamente si la pantalla cumple con el ancho mínimo de PC -->
           <div id="desktop-interactive" class="absolute inset-0 z-10 opacity-0 transition-opacity duration-700 ease-in">
@@ -139,9 +146,15 @@ const translations = {
         <div class="w-full h-full relative block sm:hidden">
           <!-- Fachada HTML del Video móvil apuntando a tu nuevo archivo .webp en public -->
           <div id="mobile-facade" class="absolute inset-0 z-20 transition-opacity duration-500 ease-out">
-            <img src="/images/video-mobile-facade.webp" alt="Video Preview Facade" class="w-full h-full object-cover rounded-2xl" fetchpriority="high" loading="eager" decoding="async" />
+            <img 
+              src="/images/video-mobile-facade.webp" 
+              alt="Video Preview Facade" 
+              class="w-full h-full object-cover rounded-2xl" 
+              fetchpriority="high" 
+              loading="eager" 
+              decoding="async" 
+            />
           </div>
-          <!-- Video Nativo Real: preload="none" detiene las predescargas destructivas de datos -->
           <video id="mobile-video" class="w-full h-full object-cover absolute inset-0 z-10 rounded-2xl" muted playsinline loop preload="none">
             <source src="/videos/robot-demo-mobile.webm" type="video/webm" />
           </video>
@@ -150,7 +163,6 @@ const translations = {
     </div>
   </section>
 
-  <!-- Problem/Agitation Section -->
   <section id="features" class="py-24 bg-slate-900 text-slate-50 px-6">
     <div class="max-w-5xl mx-auto text-center flex flex-col gap-4">
       <h2 class="text-3xl md:text-4xl font-bold tracking-tight" data-i18n="features_heading">
@@ -167,13 +179,11 @@ const translations = {
         <h3 class="text-xl font-bold" data-i18n="feat_1_title">{translations.en.feat_1_title}</h3>
         <p class="text-slate-400 text-sm leading-relaxed" data-i18n="feat_1_desc">{translations.en.feat_1_desc}</p>
       </div>
-
       <div class="p-8 bg-slate-950 border border-slate-800 rounded-xl flex flex-col gap-4">
         <div class="text-emerald-400 text-2xl font-bold" data-i18n="feat_2_metric">{translations.en.feat_2_metric}</div>
         <h3 class="text-xl font-bold" data-i18n="feat_2_title">{translations.en.feat_2_title}</h3>
         <p class="text-slate-400 text-sm leading-relaxed" data-i18n="feat_2_desc">{translations.en.feat_2_desc}</p>
       </div>
-
       <div class="p-8 bg-slate-950 border border-slate-800 rounded-xl flex flex-col gap-4">
         <div class="text-emerald-400 text-2xl font-bold" data-i18n="feat_3_metric">{translations.en.feat_3_metric}</div>
         <h3 class="text-xl font-bold" data-i18n="feat_3_title">{translations.en.feat_3_title}</h3>
@@ -182,7 +192,6 @@ const translations = {
     </div>
   </section>
 
-  <!-- Contact Section -->
   <section id="contact" class="py-24 bg-slate-950 text-slate-50 px-6 border-t border-slate-900">
     <div class="max-w-3xl mx-auto text-center flex flex-col gap-6">
       <h2 class="text-3xl md:text-5xl font-black tracking-tight" data-i18n="contact_heading">{translations.en.contact_heading}</h2>
@@ -252,7 +261,7 @@ const translations = {
     feedback.className = "mt-4 text-sm font-semibold text-center";
 
     const cleanEmail = emailInput.value.trim().toLowerCase();
-    const domain = cleanEmail.split('@');
+    const domain = cleanEmail.split('@')[1];
 
     if (blacklistedDomains.includes(domain)) {
       feedback.textContent = translations[currentLang].form_error_domain;
@@ -295,60 +304,71 @@ const translations = {
     }
   });
 
-  // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (CALIBRACIÓN COMBINADA) ---
+  // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (CALIBRACIÓN ANTIBLOQUEO) ---
   function orchestrateFacades() {
     const dFacade = document.getElementById('desktop-facade');
     const dInteractive = document.getElementById('desktop-interactive');
     const mFacade = document.getElementById('mobile-facade');
     const mVideo = document.getElementById('mobile-video');
-
+    
     const isDesktop = window.innerWidth >= 640;
 
     // Ejecución si es PC
     if (dFacade && dInteractive && isDesktop) {
       const swapDesktop = () => {
-        // Delay optimizado de 3.8s potenciado por los assets WebP aligerados
-        setTimeout(() => {
-          if (dInteractive && dFacade) {
-            dInteractive.classList.remove('opacity-0');
-            dFacade.classList.add('opacity-0');
-            setTimeout(() => dFacade.remove(), 500);
-          }
-        }, 3800);
+        if ('requestIdleCallback' in window) {
+          window.requestIdleCallback(() => {
+            setTimeout(() => {
+              if (dInteractive && dFacade) {
+                dInteractive.classList.remove('opacity-0');
+                dFacade.classList.add('opacity-0');
+                setTimeout(() => dFacade.remove(), 600);
+              }
+            }, 4200); // Demora calibrada para dar tiempo a la inicialización diferida de React
+          });
+        }
       };
 
-      if ('requestIdleCallback' in window) {
-        window.requestIdleCallback(swapDesktop);
+      if (document.readyState === 'complete') {
+        swapDesktop();
       } else {
-        window.addEventListener('load', swapDesktop);
+        window.addEventListener('load', swapDesktop, { once: true });
       }
     }
 
     // Ejecución si es Celular
     if (mFacade && mVideo && !isDesktop) {
       const swapMobile = () => {
-        // Mantener ejecución inmediata a 0ms que le dio la nota máxima a Android
-        setTimeout(() => {
-          if (mVideo && mFacade) {
-            mVideo.preload = "auto";
-            mVideo.play().then(() => {
-              mFacade.classList.add('opacity-0');
-              setTimeout(() => mFacade.remove(), 500);
-            }).catch((err) => {
-              console.warn("Autoplay blocked on mobile, keeping facade active.", err);
-            });
-          }
-        }, 0);
+        if ('requestIdleCallback' in window) {
+          window.requestIdleCallback(() => {
+            setTimeout(() => {
+              if (mVideo && mFacade) {
+                mVideo.preload = "auto";
+                mVideo.play().then(() => {
+                  mFacade.classList.add('opacity-0');
+                  setTimeout(() => mFacade.remove(), 500);
+                }).catch((err) => {
+                  console.warn("Autoplay blocked on mobile, keeping facade active.", err);
+                });
+              }
+            }, 0);
+          });
+        }
       };
 
-      if ('requestIdleCallback' in window) {
-        window.requestIdleCallback(swapMobile);
+      if (document.readyState === 'complete') {
+        swapMobile();
       } else {
-        window.addEventListener('load', swapMobile);
+        window.addEventListener('load', swapMobile, { once: true });
       }
     }
   }
 
-  orchestrateFacades();
+  // Inicialización controlada
+  if (document.readyState === 'complete') {
+    orchestrateFacades();
+  } else {
+    window.addEventListener('DOMContentLoaded', orchestrateFacades, { once: true });
+  }
   document.addEventListener('astro:after-swap', orchestrateFacades);
 </script>
