@@ -1,80 +1,19 @@
----
-export const prerender = true; // Sostiene el SSG estático instantáneo que te dio el 100 en Android
+import Spline from '@splinetool/react-spline';
 
-import Layout from '../layouts/Layout.astro';
-import RobotViewer from '../components/3D/RobotViewer.jsx';
-import { createClient } from '@sanity/client';
+export default function RobotViewer() {
+  return (
+    <div className="relative w-full h-[400px] sm:h-[450px] lg:h-[600px] flex items-center justify-center overflow-hidden rounded-2xl bg-slate-900/40 border border-slate-800/50 backdrop-blur-sm z-10 px-4 md:px-0">
+      
+      {/* El canvas carga directo y limpio apuntando a tu robot real */}
+      <div className="w-full h-full">
+        <Spline 
+          scene="https://spline.design" 
+        />
+      </div>
 
-// Conexión limpia y directa al cliente de Sanity
-const client = createClient({
-  projectId: 'rgu9dc3a',
-  dataset: 'production',
-  useCdn: true, // Usa la red Edge perimetral global en milisegundos
-  apiVersion: '2026-03-12',
-});
-
-// Consulta nativa limpia ejecutada durante la compilación estática
-const cmsDataArray = await client.fetch(`*[_type == "landingContent"]`);
-const cms = cmsDataArray || {};
-
-// Mapeo estricto al objeto de traducciones para alimentar el script cliente
-const translations = {
-  en: {
-    hero_badge: cms.hero_badge_en || "Exclusive for Digital Agencies",
-    hero_title_1: cms.hero_title_1_en || "Your Website is Slow.",
-    hero_title_2: cms.hero_title_2_en || "We Fix Your Sales.",
-    hero_desc: cms.hero_desc_en || "Don't let a bad PageSpeed score ruin your agency's reputation. We build ultra-fast, 100% score landing pages powered by Astro & headless architecture.",
-    hero_btn_audit: cms.hero_btn_audit_en || "Book a 15-Min Speed Audit",
-    hero_btn_proof: cms.hero_btn_proof_en || "See Stack & Proof",
-    features_heading: cms.features_heading_en || "Why a Red PageSpeed Score Kills Your Deals",
-    features_subheading: cms.features_subheading_en || "When a CEO or Tech Leader visits your agency site and experiences lag, you lose authority instantly.",
-    feat_1_metric: cms.feat_1_metric_en || "100% Score",
-    feat_1_title: cms.feat_1_title_en || "Blazing Fast SSG",
-    feat_1_desc: cms.feat_1_desc_en || "Zero client-side JavaScript by default using Astro. Maximum core web vitals performance.",
-    feat_2_metric: cms.feat_2_metric_en || "Premium UI",
-    feat_2_title: cms.feat_2_title_en || "Fluid Animations",
-    feat_2_desc: cms.feat_2_desc_en || "Interactive 3D models and tailored Tailwind CSS styles without harming performance metrics.",
-    feat_3_metric: cms.feat_3_metric_en || "Git CMS",
-    feat_3_title: cms.feat_3_title_en || "Full Autoadministrable",
-    feat_3_desc: cms.feat_3_desc_en || "Lightweight headless CMS setup. Your client or team updates content directly via GitHub metadata.",
-    contact_heading: cms.contact_heading_en || "Ready to Elevate Your Performance?",
-    contact_subheading: cms.contact_subheading_en || "Let's deploy a tailored MVP for your team. Fixed price. 50% upfront. Delivered in days.",
-    contact_btn: cms.contact_btn_en || "Get Started",
-    contact_placeholder: cms.contact_placeholder_en || "Enter your business email",
-    form_sending: "Sending...",
-    form_success: "🚀 Awesome! Check your inbox shortly.",
-    form_error_domain: "❌ Please use a business email (no Gmail/Yahoo).",
-    form_error_server: "❌ Something went wrong. Try again."
-  },
-  es: {
-    hero_badge: cms.hero_badge_es || "Exclusivo para Agencias Digitales",
-    hero_title_1: cms.hero_title_1_es || "Tu Web es Lenta.",
-    hero_title_2: cms.hero_title_2_es || "Nosotros Reparamos tus Ventas.",
-    hero_desc: cms.hero_desc_es || "No dejes que una mala puntuación de PageSpeed arruine la reputación de tu agencia. Construimos páginas ultra rápidas.",
-    hero_btn_audit: cms.hero_btn_audit_es || "Reserva una Auditoría de 15 Min",
-    hero_btn_proof: cms.hero_btn_proof_es || "Ver Stack y Pruebas",
-    features_heading: cms.features_heading_es || "Por qué un PageSpeed en Rojo Mata tus Tratos",
-    features_subheading: cms.features_subheading_es || "Cuando un CEO o Líder Técnico visita tu sitio y experimenta lentitud, pierdes autoridad instantáneamente.",
-    feat_1_metric: cms.feat_1_metric_es || "Score de 100%",
-    feat_1_title: cms.feat_1_title_es || "SSG Ultra Rápido",
-    feat_1_desc: cms.feat_1_desc_es || "Cero JavaScript del lado del cliente por defecto usando Astro.",
-    feat_2_metric: cms.feat_2_metric_es || "UI Premium",
-    feat_2_title: cms.feat_2_title_es || "Animaciones Fluidas",
-    feat_2_desc: cms.feat_2_desc_es || "Modelos 3D interactivos y estilos Tailwind CSS a medida.",
-    feat_3_metric: cms.feat_3_metric_es || "Git CMS",
-    feat_3_title: cms.feat_3_title_es || "Auto-administrable",
-    feat_3_desc: cms.feat_3_es || "CMS headless ligero. Tu equipo actualiza contenido directamente.",
-    contact_heading: cms.contact_heading_es || "¿Listo para Elevar tu Rendimiento?",
-    contact_subheading: cms.contact_subheading_es || "Despleguemos un MVP a la medida de tu equipo.",
-    contact_btn: cms.contact_btn_es || "Comenzar",
-    contact_placeholder: cms.contact_placeholder_es || "Ingresa tu correo empresarial",
-    form_sending: "Enviando...",
-    form_success: "🚀 ¡Excelente! Revisa tu bandeja de entrada pronto.",
-    form_error_domain: "❌ Por favor usa un correo empresarial (no Gmail/Yahoo).",
-    form_error_server: "❌ Algo salió mal. Inténtalo de nuevo."
-  }
-};
----
+    </div>
+  );
+}
 <Layout title="Premium Web Development for High-Converting Agencies">
   <!-- Hero Section con posicionamiento relativo -->
   <section class="relative min-h-screen flex items-center bg-slate-950 text-slate-50 px-6 overflow-hidden">
@@ -129,8 +68,8 @@ const translations = {
           <div id="desktop-facade" class="absolute inset-0 z-20 transition-opacity duration-500 ease-out">
             <img src="/images/robot-facade.png" alt="Robot Render Facade" class="w-full h-full object-contain" fetchpriority="high" loading="eager" />
           </div>
-          <!-- Canvas 3D Real: Hidratado únicamente si la pantalla cumple con el ancho mínimo de PC -->
-          <div id="desktop-interactive" class="absolute inset-0 z-10 opacity-0 transition-opacity duration-700 ease-in">
+          <!-- TRUCO MAESTRO: content-visibility prohíbe calcular la geometría interna al inicio liberando la CPU -->
+          <div id="desktop-interactive" class="absolute inset-0 z-10 opacity-0 transition-opacity duration-700 ease-in" style="content-visibility: auto;">
             <RobotViewer client:media="(min-width: 640px)" />
           </div>
         </div>
@@ -295,7 +234,7 @@ const translations = {
     }
   });
 
-    // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (EDICIÓN DE GLORIA DOBLE 100) ---
+  // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (CALIBRACIÓN RETORNADA) ---
   function orchestrateFacades() {
     const dFacade = document.getElementById('desktop-facade');
     const dInteractive = document.getElementById('desktop-interactive');
@@ -304,17 +243,17 @@ const translations = {
 
     const isDesktop = window.innerWidth >= 640;
 
-    // --- BLOQUE MAESTRO DE ESCRITORIO (PC) ---
+    // Ejecución si es PC
     if (dFacade && dInteractive && isDesktop) {
       const swapDesktop = () => {
-        // Extendemos a 6 segundos para dar paz absoluta al TBT y asegurar el 100 de escritorio con Lazy Loading
+        // Retorno al delay estable de 3.8s potenciado por el content-visibility CSS
         setTimeout(() => {
           if (dInteractive && dFacade) {
             dInteractive.classList.remove('opacity-0');
             dFacade.classList.add('opacity-0');
             setTimeout(() => dFacade.remove(), 500);
           }
-        }, 6000);
+        }, 3800);
       };
 
       if ('requestIdleCallback' in window) {
@@ -324,10 +263,10 @@ const translations = {
       }
     }
 
-    // --- BLOQUE MAESTRO DE MÓVIL (CELULAR) ---
+    // Ejecución si es Celular
     if (mFacade && mVideo && !isDesktop) {
       const swapMobile = () => {
-        // Sostenemos los 0ms exactos que inmortalizaron tu 100/100 de Android
+        // Mantener ejecución inmediata a 0ms que le dio el 100/100 a Android
         setTimeout(() => {
           if (mVideo && mFacade) {
             mVideo.preload = "auto";
@@ -351,5 +290,4 @@ const translations = {
 
   orchestrateFacades();
   document.addEventListener('astro:after-swap', orchestrateFacades);
-
 </script>
