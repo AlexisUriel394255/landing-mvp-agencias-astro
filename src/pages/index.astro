@@ -1,5 +1,5 @@
 ---
-export const prerender = false; // Cambiado a FALSE para que el servidor evalúe el dispositivo en vivo
+export const prerender = true; // Regresa la landing a la velocidad de la luz estática
 
 import Layout from '../layouts/Layout.astro';
 import RobotViewer from '../components/3D/RobotViewer.jsx';
@@ -134,7 +134,7 @@ const translations = {
           </div>
           <!-- Canvas 3D Real: Hidratado únicamente si NO es un dispositivo móvil detectado por el servidor -->
           <div id="desktop-interactive" class="absolute inset-0 z-10 opacity-0 transition-opacity duration-700 ease-in">
-            {!isMobileServer && <RobotViewer client:only="react" />}
+     <RobotViewer client:media="(min-width: 768px)" />
           </div>
         </div>
 
