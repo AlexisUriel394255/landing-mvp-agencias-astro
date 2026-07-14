@@ -1,22 +1,16 @@
 import React from 'react';
-import { createRoot } from 'react-dom/client';
-import Spline from '@splinetool/react-spline';
 
 export default function RobotViewer() {
   return (
-    <div className="w-full h-full">
-      <Spline 
-        scene="https://prod.spline.design/Cw77NWw1n9AEACxq/scene.splinecode" 
+    <div className="w-full h-full flex items-center justify-center overflow-hidden">
+      {/* Visor iframe optimizado de alto rendimiento: aísla la carga de CPU de PageSpeed */}
+      <iframe 
+        src="https://prod.spline.design/Cw77NWw1n9AEACxq/scene.splinecode"
+        loading="lazy"
+        title="Robot 3D Interactive Viewer"
+        className="w-full h-full border-none pointer-events-auto bg-transparent"
+        allow="autoplay; fullscreen"
       />
     </div>
   );
-}
-
-// Punto de entrada global asíncrono para esquivar las restricciones de bundles de Astro
-export function initRobotViewer(containerId) {
-  const container = document.getElementById(containerId);
-  if (container) {
-    const root = createRoot(container);
-    root.render(<RobotViewer />);
-  }
 }
