@@ -22,7 +22,7 @@ export default function RobotViewer() {
       {/* Tu Robot Premium Original de Alta Resolución */}
       <div className="w-full h-full">
         <Spline 
-          scene="https://spline.design" 
+          scene="https://prod.spline.design/Cw77NWw1n9AEACxq/scene.splinecode" 
           onLoad={() => setIs3DReady(true)}
         />
       </div>
