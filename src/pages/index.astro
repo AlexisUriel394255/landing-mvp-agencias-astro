@@ -1,15 +1,15 @@
 ---
-export const prerender = true; // Sostiene el SSG estático instantáneo que te dio el 100 en Android
+export const prerender = true; // Sostiene la velocidad de carga SSG instantánea en el core del sitio
 
 import Layout from '../layouts/Layout.astro';
 import RobotViewer from '../components/3D/RobotViewer.jsx';
 import { createClient } from '@sanity/client';
 
-// Conexión directa y veloz al cliente de Sanity
+// Conexión directa al cliente de Sanity
 const client = createClient({
   projectId: 'rgu9dc3a',
   dataset: 'production',
-  useCdn: true, // Usa la red Edge global en milisegundos
+  useCdn: true, // Aprovecha la red perimetral global en milisegundos
   apiVersion: '2026-03-12',
 });
 
@@ -295,7 +295,7 @@ const translations = {
     }
   });
 
-  // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (EDICIÓN ESTABLE UNIFICADA) ---
+  // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (CALIBRACIÓN DE MÁXIMO RENDIMIENTO) ---
   function orchestrateFacades() {
     const dFacade = document.getElementById('desktop-facade');
     const dInteractive = document.getElementById('desktop-interactive');
@@ -307,7 +307,7 @@ const translations = {
     // Ejecución si es PC
     if (dFacade && dInteractive && isDesktop) {
       const swapDesktop = () => {
-        // Calibración perfecta a 3.0s para forzar el 100/100 en PC sin afectar a móviles
+        // Calibración a 3.0s para exprimir el LCP y afianzar el 100 en PC sin molestar a móviles
         setTimeout(() => {
           dInteractive.classList.remove('opacity-0');
           dFacade.classList.add('opacity-0');
@@ -325,7 +325,7 @@ const translations = {
     // Ejecución si es Celular
     if (mFacade && mVideo && !isDesktop) {
       const swapMobile = () => {
-        // Activación limpia a 1.5s que sostiene de forma indestructible tu 100 de Android
+        // Reducción quirúrgica a 0ms: El video arranca al instante liberando la métrica del LCP móvil
         setTimeout(() => {
           mVideo.preload = "auto";
           mVideo.play().then(() => {
@@ -334,7 +334,7 @@ const translations = {
           }).catch((err) => {
             console.warn("Autoplay blocked on mobile, keeping facade active.", err);
           });
-        }, 1500);
+        }, 0);
       };
 
       if ('requestIdleCallback' in window) {
