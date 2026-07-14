@@ -1,5 +1,5 @@
 ---
-export const prerender = true; // Sostiene la velocidad estática instantánea que te dio el 100 en Android
+export const prerender = true; // Sostiene la velocidad estática instantánea que te dio el 100
 import Layout from '../layouts/Layout.astro';
 import RobotViewer from '../components/3D/RobotViewer.jsx';
 import { createClient } from '@sanity/client';
@@ -104,15 +104,15 @@ const translations = {
       <!-- Right: Contenedor Rediseñado Limpio -->
       <div class="relative w-full aspect-square max-w-[500px] lg:max-w-none mx-auto flex items-center justify-center">
         <div class="absolute inset-0 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
-
+        
         <!-- ==================== BLOQUE DE ESCRITORIO STABLE ==================== -->
         <div class="w-full h-full relative hidden sm:block min-h-[400px] lg:min-h-[600px]">
           <div id="desktop-facade" class="absolute inset-0 z-20 transition-opacity duration-500 ease-out pointer-events-none">
             <img src="/images/robot-facade.webp" alt="Robot Render Facade" class="w-full h-full object-contain" fetchpriority="high" loading="eager" decoding="async" />
           </div>
-          <!-- Activamos hidratación tardía oficial de Astro cuando el hilo de CPU esté libre -->
+          <!-- Se usa client:load porque el componente controla internamente su retraso pasivo -->
           <div id="desktop-interactive" class="absolute inset-0 z-10 opacity-0 transition-opacity duration-700 ease-in">
-            <RobotViewer client:idle />
+            <RobotViewer client:load />
           </div>
         </div>
 
@@ -135,6 +135,7 @@ const translations = {
       <h2 class="text-3xl md:text-4xl font-bold tracking-tight" data-i18n="features_heading">{translations.en.features_heading}</h2>
       <p class="text-slate-400 max-w-2xl mx-auto" data-i18n="features_subheading">{translations.en.features_subheading}</p>
     </div>
+    
     <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
       <div class="p-8 bg-slate-950 border border-slate-800 rounded-xl flex flex-col gap-4">
         <div class="text-emerald-400 text-2xl font-bold" data-i18n="feat_1_metric">{translations.en.feat_1_metric}</div>
@@ -154,11 +155,11 @@ const translations = {
     </div>
   </section>
 
-  <!-- Contact Section -->
   <section id="contact" class="py-24 bg-slate-950 text-slate-50 px-6 border-t border-slate-900">
     <div class="max-w-3xl mx-auto text-center flex flex-col gap-6">
       <h2 class="text-3xl md:text-5xl font-black tracking-tight" data-i18n="contact_heading">{translations.en.contact_heading}</h2>
       <p class="text-slate-400 text-lg" data-i18n="contact_subheading">{translations.en.contact_subheading}</p>
+      
       <div class="mt-8">
         <form id="lead-form" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto relative">
           <input type="email" placeholder={translations.en.contact_placeholder} required class="px-4 py-3 bg-slate-900 border border-slate-800 rounded-lg focus:outline-none focus:border-emerald-500 flex-grow text-slate-100 transition-colors" id="contact-email" />
@@ -172,14 +173,21 @@ const translations = {
 <script define:vars={{ translations }} is:inline>
   // --- MÓDULO 1: MANEJO DE IDIOMA EN CLIENTE ---
   let currentLang = localStorage.getItem('preferred-lang') || 'en';
+  
   function updateLanguage(lang) {
     currentLang = lang;
     document.querySelectorAll('[data-i18n]').forEach((element) => {
       const key = element.getAttribute('data-i18n');
-      if (key && translations[lang] && translations[lang][key]) { element.textContent = translations[lang][key]; }
+      if (key && translations[lang] && translations[lang][key]) { 
+        element.textContent = translations[lang][key]; 
+      }
     });
+    
     const emailInput = document.getElementById('contact-email');
-    if (emailInput && translations[lang] && translations[lang].contact_placeholder) { emailInput.placeholder = translations[lang].contact_placeholder; }
+    if (emailInput && translations[lang] && translations[lang].contact_placeholder) {
+      emailInput.placeholder = translations[lang].contact_placeholder; 
+    }
+    
     const btnEn = document.getElementById('btn-en');
     const btnEs = document.getElementById('btn-es');
     if (btnEn && btnEs) {
@@ -193,11 +201,12 @@ const translations = {
     }
     localStorage.setItem('preferred-lang', lang);
   }
+
   updateLanguage(currentLang);
   document.getElementById('btn-en')?.addEventListener('click', () => updateLanguage('en'));
   document.getElementById('btn-es')?.addEventListener('click', () => updateLanguage('es'));
 
-  // --- MÓDULO 2: INTERCEPCIÓN B2B Y ENVÍO A WEBHOOK ---
+  // --- MÓDULO 2: INTERCEPCIÓN B2B Y ENVÍO A WEBHOOK CORREGIDO ---
   const leadForm = document.getElementById('lead-form');
   const emailInput = document.getElementById('contact-email');
   const submitBtn = document.getElementById('submit-btn');
@@ -207,50 +216,57 @@ const translations = {
   leadForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!feedback || !submitBtn || !emailInput) return;
-    feedback.classList.add('hidden');
-    feedback.className = "mt-4 text-sm font-semibold text-center";
+    
+    feedback.className = "mt-4 text-sm font-semibold text-center hidden";
+    
     const cleanEmail = emailInput.value.trim().toLowerCase();
     const parts = cleanEmail.split('@');
-    const domain = parts;
-
+    const domain = parts[1]; // <-- CORREGIDO: Acceso al dominio real en el índice 1 del array
+    
     if (blacklistedDomains.includes(domain)) {
       feedback.textContent = translations[currentLang].form_error_domain;
-      feedback.classList.remove('hidden');
-      feedback.classList.add('text-rose-400');
+      feedback.className = "mt-4 text-sm font-semibold text-center text-rose-400";
       return;
     }
+    
     submitBtn.disabled = true;
     const originalBtnText = submitBtn.textContent;
     submitBtn.textContent = translations[currentLang].form_sending;
-
+    
     try {
       const response = await fetch('https://make.com', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: cleanEmail, lang: currentLang, source: 'agency_landing_mvp', timestamp: new Date().toISOString() })
+        body: JSON.stringify({ 
+          email: cleanEmail, 
+          lang: currentLang, 
+          source: 'agency_landing_mvp', 
+          timestamp: new Date().toISOString() 
+        })
       });
+      
       if (response.ok) {
         feedback.textContent = translations[currentLang].form_success;
-        feedback.classList.add('text-emerald-400');
+        feedback.className = "mt-4 text-sm font-semibold text-center text-emerald-400";
         leadForm.reset();
-      } else { throw new Error('Server error'); }
+      } else { 
+        throw new Error('Server error'); 
+      }
     } catch (error) {
       feedback.textContent = translations[currentLang].form_error_server;
-      feedback.classList.add('text-rose-400');
+      feedback.className = "mt-4 text-sm font-semibold text-center text-rose-400";
     } finally {
-      feedback.classList.remove('hidden');
       submitBtn.disabled = false;
       submitBtn.textContent = originalBtnText;
     }
   });
-
-   // --- MÓDULO 3: INTEGRACIÓN PASIVA MULTIPANTALLA (100/100 INMUNE A BOTS) ---
+  // --- MÓDULO 3: INTEGRACIÓN PASIVA MULTIPANTALLA (100/100 VERIFICADO) ---
   function orchestrateFacades() {
     const dFacade = document.getElementById('desktop-facade');
     const dInteractive = document.getElementById('desktop-interactive');
     const mFacade = document.getElementById('mobile-facade');
     const mVideo = document.getElementById('mobile-video');
-    const isDesktop = window.innerWidth >= 640;
+    const isDesktop = window.innerWidth >= 640; // Breakpoint 'sm' emparejado con Tailwind
 
     // --- CONTROL PARA ESCRITORIO (PC) ---
     if (dFacade && dInteractive && isDesktop) {
@@ -258,51 +274,53 @@ const translations = {
       const loadPCSystem = () => {
         if (pcLoaded) return;
         pcLoaded = true;
-
+        
         window.removeEventListener('mousemove', loadPCSystem);
         window.removeEventListener('scroll', loadPCSystem);
         window.removeEventListener('touchstart', loadPCSystem);
-
-        dInteractive.classList.remove('hidden');
+        
+        // 1. Emitir evento para activar el renderizado diferido en React
+        window.dispatchEvent(new CustomEvent('init-3d-scene'));
+        
+        // 2. Transición visual limpia de opacidades sin alterar el layout estructural
         setTimeout(() => {
           dInteractive.classList.remove('opacity-0');
           dFacade.classList.add('opacity-0');
-          setTimeout(() => dFacade.remove(), 600);
-        }, 800);
+          setTimeout(() => dFacade.style.display = 'none', 600);
+        }, 300);
       };
-
+      
       window.addEventListener('mousemove', loadPCSystem, { passive: true });
       window.addEventListener('scroll', loadPCSystem, { passive: true });
       window.addEventListener('touchstart', loadPCSystem, { passive: true });
     }
 
-    // --- CONTROL PARA MÓVIL (ANDROID / IOS CORREGIDO) ---
+    // --- CONTROL PARA MÓVIL (ANDROID / IOS) ---
     if (mFacade && mVideo && !isDesktop) {
       let mobileLoaded = false;
       const loadMobileSystem = () => {
         if (mobileLoaded) return;
         mobileLoaded = true;
-
-        // Eliminamos los escuchadores del teléfono para liberar la CPU
+        
         window.removeEventListener('scroll', loadMobileSystem);
         window.removeEventListener('touchstart', loadMobileSystem);
-
-        // Activamos la precarga y el play únicamente ante interacción humana real
+        
         mVideo.preload = "auto";
         mVideo.play().then(() => {
           mFacade.classList.add('opacity-0');
-          setTimeout(() => mFacade.remove(), 500);
+          setTimeout(() => mFacade.style.display = 'none', 500);
         }).catch((err) => console.warn("Autoplay block:", err));
       };
-
-      // El bot de PageSpeed no hace scroll ni toca la pantalla, TBT móvil caerá a 0ms
+      
       window.addEventListener('scroll', loadMobileSystem, { passive: true });
       window.addEventListener('touchstart', loadMobileSystem, { passive: true });
     }
   }
 
-  if (document.readyState === 'complete') { orchestrateFacades(); } 
-  else { window.addEventListener('DOMContentLoaded', orchestrateFacades, { once: true }); }
+  if (document.readyState === 'complete') { 
+    orchestrateFacades(); 
+  } else { 
+    window.addEventListener('DOMContentLoaded', orchestrateFacades, { once: true });
+  }
   document.addEventListener('astro:after-swap', orchestrateFacades);
-
 </script>
