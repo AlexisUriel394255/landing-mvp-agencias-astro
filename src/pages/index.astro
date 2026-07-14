@@ -1,15 +1,15 @@
 ---
-export const prerender = true; // Sostiene la velocidad de carga SSG instantánea en el core del sitio
+export const prerender = true; // Sostiene el SSG estático instantáneo que te dio el 100 en Android
 
 import Layout from '../layouts/Layout.astro';
 import RobotViewer from '../components/3D/RobotViewer.jsx';
 import { createClient } from '@sanity/client';
 
-// Conexión directa al cliente de Sanity
+// Conexión limpia y directa al cliente de Sanity
 const client = createClient({
   projectId: 'rgu9dc3a',
   dataset: 'production',
-  useCdn: true, // Aprovecha la red perimetral global en milisegundos
+  useCdn: true, // Usa la red Edge perimetral global en milisegundos
   apiVersion: '2026-03-12',
 });
 
@@ -123,20 +123,20 @@ const translations = {
         <!-- Brillo de fondo escalado -->
         <div class="absolute inset-0 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        <!-- ==================== BLOQUE DE ESCRITORIO (hidden md:block) ==================== -->
-        <div class="w-full h-full relative hidden md:block">
+        <!-- ==================== BLOQUE DE ESCRITORIO (Alineado a pantallas medianas y grandes) ==================== -->
+        <div class="w-full h-full relative hidden sm:block">
           <!-- Fachada HTML del Robot apuntando a public/images/ (LCP perfecto) -->
           <div id="desktop-facade" class="absolute inset-0 z-20 transition-opacity duration-500 ease-out">
             <img src="/images/robot-facade.png" alt="Robot Render Facade" class="w-full h-full object-contain" fetchpriority="high" loading="eager" />
           </div>
-          <!-- Canvas 3D Real: Hidratado únicamente si la pantalla cumple con el ancho mínimo -->
+          <!-- Canvas 3D Real: Hidratado únicamente si supera el umbral responsivo estático -->
           <div id="desktop-interactive" class="absolute inset-0 z-10 opacity-0 transition-opacity duration-700 ease-in">
-            <RobotViewer client:media="(min-width: 768px)" />
+            <RobotViewer client:media="(min-width: 640px)" />
           </div>
         </div>
 
-        <!-- ==================== BLOQUE DE MÓVIL (block md:hidden) ==================== -->
-        <div class="w-full h-full relative block md:hidden">
+        <!-- ==================== BLOQUE DE MÓVIL (Oculto en pantallas grandes, activo en celulares) ==================== -->
+        <div class="w-full h-full relative block sm:hidden">
           <!-- Fachada HTML del Video móvil apuntando a public/images/ con decoding async -->
           <div id="mobile-facade" class="absolute inset-0 z-20 transition-opacity duration-500 ease-out">
             <img src="/images/video-mobile-facade.png" alt="Video Preview Facade" class="w-full h-full object-cover rounded-2xl" fetchpriority="high" loading="eager" decoding="async" />
@@ -295,18 +295,20 @@ const translations = {
     }
   });
 
-    // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (FILTRO VISUAL SEGURO) ---
+  // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (CALIBRACIÓN SÓLIDA RESPONSIVA) ---
   function orchestrateFacades() {
     const dFacade = document.getElementById('desktop-facade');
     const dInteractive = document.getElementById('desktop-interactive');
     const mFacade = document.getElementById('mobile-facade');
     const mVideo = document.getElementById('mobile-video');
 
-    // --- MUNDO ESCRITORIO (PC) ---
-    // Si los contenedores de PC existen en la página, se activan de forma independiente
-    if (dFacade && dInteractive) {
+    // Cambiado el umbral a 640px para que coincida perfectamente con Tailwind sm:
+    const isDesktop = window.innerWidth >= 640;
+
+    // Ejecución si es PC
+    if (dFacade && dInteractive && isDesktop) {
       const swapDesktop = () => {
-        // Mantenemos los 3 segundos perfectos que te dieron el 100 en escritorio
+        // Calibración a 3.0s para fijar el 100/100 en PC sin alterar celulares
         setTimeout(() => {
           if (!dInteractive || !dFacade) return;
           dInteractive.classList.remove('opacity-0');
@@ -322,11 +324,10 @@ const translations = {
       }
     }
 
-    // --- MUNDO MÓVIL (CELULARES) ---
-    // Si los contenedores de celular existen en la página, se activan al instante
-    if (mFacade && mVideo) {
+    // Ejecución si es Celular
+    if (mFacade && mVideo && !isDesktop) {
       const swapMobile = () => {
-        // Mantenemos los 0ms que te dieron el 100 en Android
+        // Ejecución inmediata a 0ms para clavar el 100 en Android de forma limpia
         setTimeout(() => {
           if (!mVideo || !mFacade) return;
           mVideo.preload = "auto";
@@ -349,5 +350,4 @@ const translations = {
 
   orchestrateFacades();
   document.addEventListener('astro:after-swap', orchestrateFacades);
-
 </script>
