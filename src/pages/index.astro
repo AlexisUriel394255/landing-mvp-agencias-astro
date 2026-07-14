@@ -1,44 +1,40 @@
 ---
-export const prerender = true; // Sostiene la velocidad estática instantánea que te dio el 100
+export const prerender = true; 
 import Layout from '../layouts/Layout.astro';
 import RobotViewer from '../components/3D/RobotViewer.jsx';
 import { createClient } from '@sanity/client';
 
-// Conexión limpia y directa al cliente de Sanity
 const client = createClient({
   projectId: 'rgu9dc3a',
   dataset: 'production',
-  useCdn: false, // 👈 ¡CAMBIA ESTO A FALSE! Obliga a leer datos frescos al compilar
+  useCdn: false, // Forzar datos limpios
   apiVersion: '2026-03-12',
 });
 
+// CORRECCIÓN: Agregamos '[0]' al final para extraer el primer objeto válido del array
+const cms = await client.fetch(`*[_type == "landingContent"][0]`) || {};
 
-// Consulta nativa ejecutada durante la compilación estática
-const cmsDataArray = await client.fetch(`*[_type == "landingContent"]`);
-const cms = cmsDataArray || {};
-
-// Mapeo estricto al objeto de traducciones para alimentar el script cliente
 const translations = {
   en: {
     hero_badge: cms.hero_badge_en || "Exclusive for Digital Agencies",
     hero_title_1: cms.hero_title_1_en || "Your Website is Slow.",
     hero_title_2: cms.hero_title_2_en || "We Fix Your Sales.",
-    hero_desc: cms.hero_desc_en || "Don't let a bad PageSpeed score ruin your agency's reputation. We build ultra-fast, 100% score landing pages powered by Astro & headless architecture.",
+    hero_desc: cms.hero_desc_en || "Don't let a bad PageSpeed score ruin your agency's reputation.",
     hero_btn_audit: cms.hero_btn_audit_en || "Book a 15-Min Speed Audit",
     hero_btn_proof: cms.hero_btn_proof_en || "See Stack & Proof",
     features_heading: cms.features_heading_en || "Why a Red PageSpeed Score Kills Your Deals",
-    features_subheading: cms.features_subheading_en || "When a CEO or Tech Leader visits your agency site and experiences lag, you lose authority instantly.",
+    features_subheading: cms.features_subheading_en || "When a CEO or Tech Leader visits your agency site and experiences lag, you lose authority.",
     feat_1_metric: cms.feat_1_metric_en || "100% Score",
     feat_1_title: cms.feat_1_title_en || "Blazing Fast SSG",
-    feat_1_desc: cms.feat_1_desc_en || "Zero client-side JavaScript by default using Astro. Maximum core web vitals performance.",
+    feat_1_desc: cms.feat_1_desc_en || "Zero client-side JavaScript by default using Astro.",
     feat_2_metric: cms.feat_2_metric_en || "Premium UI",
     feat_2_title: cms.feat_2_title_en || "Fluid Animations",
-    feat_2_desc: cms.feat_2_desc_en || "Interactive 3D models and tailored Tailwind CSS styles without harming performance metrics.",
+    feat_2_desc: cms.feat_2_desc_en || "Interactive 3D models and tailored Tailwind CSS.",
     feat_3_metric: cms.feat_3_metric_en || "Git CMS",
     feat_3_title: cms.feat_3_title_en || "Full Autoadministrable",
-    feat_3_desc: cms.feat_3_desc_en || "Lightweight headless CMS setup. Your client or team updates content directly via GitHub metadata.",
+    feat_3_desc: cms.feat_3_desc_en || "Lightweight headless CMS setup.",
     contact_heading: cms.contact_heading_en || "Ready to Elevate Your Performance?",
-    contact_subheading: cms.contact_subheading_en || "Let's deploy a tailored MVP for your team. Fixed price. 50% upfront. Delivered in days.",
+    contact_subheading: cms.contact_subheading_en || "Let's deploy a tailored MVP for your team.",
     contact_btn: cms.contact_btn_en || "Get Started",
     contact_placeholder: cms.contact_placeholder_en || "Enter your business email",
     form_sending: "Sending...",
@@ -50,22 +46,22 @@ const translations = {
     hero_badge: cms.hero_badge_es || "Exclusivo para Agencias Digitales",
     hero_title_1: cms.hero_title_1_es || "Tu Web es Lenta.",
     hero_title_2: cms.hero_title_2_es || "Nosotros Reparamos tus Ventas.",
-    hero_desc: cms.hero_desc_es || "No dejes que una mala puntuación de PageSpeed arruine la reputación de tu agencia. Construimos páginas ultra rápidas.",
+    hero_desc: cms.hero_desc_es || "No dejes que una mala puntuación de PageSpeed arruine la reputación.",
     hero_btn_audit: cms.hero_btn_audit_es || "Reserva una Auditoría de 15 Min",
     hero_btn_proof: cms.hero_btn_proof_es || "Ver Stack y Pruebas",
     features_heading: cms.features_heading_es || "Por qué un PageSpeed en Rojo Mata tus Tratos",
-    features_subheading: cms.features_subheading_es || "Cuando un CEO o Líder Técnico visita tu sitio y experimenta lentitud, pierdes autoridad instantáneamente.",
+    features_subheading: cms.features_subheading_es || "Cuando un CEO o Líder Técnico visita tu sitio y experimenta lentitud.",
     feat_1_metric: cms.feat_1_metric_es || "Score de 100%",
     feat_1_title: cms.feat_1_title_es || "SSG Ultra Rápido",
-    feat_1_desc: cms.feat_1_desc_es || "Cero JavaScript del lado del cliente por defecto usando Astro.",
+    feat_1_desc: cms.feat_1_desc_es || "Cero JavaScript del lado del cliente por defecto.",
     feat_2_metric: cms.feat_2_metric_es || "UI Premium",
     feat_2_title: cms.feat_2_title_es || "Animaciones Fluidas",
-    feat_2_desc: cms.feat_2_desc_es || "Modelos 3D interactivos y estilos Tailwind CSS a medida.",
+    feat_2_desc: cms.feat_2_desc_es || "Modelos 3D interactivos y estilos Tailwind CSS.",
     feat_3_metric: cms.feat_3_metric_es || "Git CMS",
     feat_3_title: cms.feat_3_title_es || "Auto-administrable",
-    feat_3_desc: cms.feat_3_es || "CMS headless ligero. Tu equipo actualiza contenido directamente.",
+    feat_3_desc: cms.feat_3_es || "CMS headless ligero. Tu equipo actualiza contenido.",
     contact_heading: cms.contact_heading_es || "¿Listo para Elevar tu Rendimiento?",
-    contact_subheading: cms.contact_subheading_es || "Despleguemos un MVP a la medida de tu equipo.",
+    contact_subheading: cms.contact_subheading_es || "Despleguemos un MVP a la medida.",
     contact_btn: cms.contact_btn_es || "Comenzar",
     contact_placeholder: cms.contact_placeholder_es || "Ingresa tu correo empresarial",
     form_sending: "Enviando...",
@@ -74,6 +70,7 @@ const translations = {
     form_error_server: "❌ Algo salió mal. Inténtalo de nuevo."
   }
 };
+
 ---
 <Layout title="Premium Web Development for High-Converting Agencies">
   <!-- Hero Section con posicionamiento relativo -->
