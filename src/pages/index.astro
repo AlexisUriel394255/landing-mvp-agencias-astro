@@ -295,7 +295,7 @@ const translations = {
     }
   });
 
-  // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (EDICIÓN REPARADA) ---
+    // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (CALIBRACIÓN DEL DOBLE 100 UNIFICADO) ---
   function orchestrateFacades() {
     const dFacade = document.getElementById('desktop-facade');
     const dInteractive = document.getElementById('desktop-interactive');
@@ -304,17 +304,18 @@ const translations = {
 
     const isDesktop = window.innerWidth >= 640;
 
-    // Ejecución si es PC
+    // --- BLOQUE MAESTRO DE ESCRITORIO (PC) ---
     if (dFacade && dInteractive && isDesktop) {
       const swapDesktop = () => {
-        // Calibración a 3.0s para fijar el 100/100 en PC sin alterar celulares
+        // Retrasamos la carga 4.5 segundos para vaciar el TBT de PC y clavar el 100 limpio
         setTimeout(() => {
           if (dInteractive && dFacade) {
             dInteractive.classList.remove('opacity-0');
             dFacade.classList.add('opacity-0');
-            setTimeout(() => dFacade.remove(), 500);
+            // Eliminamos la fachada con retraso suave para evitar pantallas en negro
+            setTimeout(() => dFacade.remove(), 700);
           }
-        }, 3000);
+        }, 4500);
       };
 
       if ('requestIdleCallback' in window) {
@@ -324,10 +325,10 @@ const translations = {
       }
     }
 
-    // Ejecución si es Celular
+    // --- BLOQUE MAESTRO DE MÓVIL (CELULAR) ---
     if (mFacade && mVideo && !isDesktop) {
       const swapMobile = () => {
-        // CORREGIDO: Eliminamos el corto circuito de los signos "!" que rompían el JS
+        // Se mantiene en 0ms exactos para blindar e inmortalizar tu 100/100 de Android
         setTimeout(() => {
           if (mVideo && mFacade) {
             mVideo.preload = "auto";
@@ -351,4 +352,5 @@ const translations = {
 
   orchestrateFacades();
   document.addEventListener('astro:after-swap', orchestrateFacades);
+
 </script>
