@@ -75,46 +75,85 @@ const translations = {
 };
 ---
 <Layout title="Premium Web Development for High-Converting Agencies">
+  <!-- Hero Section con posicionamiento relativo -->
   <section class="relative min-h-screen flex items-center bg-slate-950 text-slate-50 px-6 overflow-hidden">
+    <!-- Contenedor invisible que mide el 100% del ancho de la pantalla -->
     <div class="absolute top-6 left-0 w-screen z-50 pointer-events-none">
+      <!-- Botones posicionados al extremo derecho absoluto con margen mínimo al scrollbar -->
       <div class="absolute right-4 md:right-6 lg:right-8 bg-slate-900/90 backdrop-blur-md border border-slate-800 px-3 py-1.5 rounded-full flex items-center gap-1 shadow-2xl transition-all hover:border-slate-700 pointer-events-auto">
-        <button id="btn-en" class="text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer bg-emerald-500 text-slate-950 select-none">EN</button>
-        <button id="btn-es" class="text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer text-slate-400 hover:text-white select-none">ES</button>
+        <button id="btn-en" class="text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer bg-emerald-500 text-slate-950 select-none">
+          EN
+        </button>
+        <button id="btn-es" class="text-xs font-bold px-2.5 py-1 rounded-full transition-all cursor-pointer text-slate-400 hover:text-white select-none">
+          ES
+        </button>
       </div>
     </div>
 
+    <!-- Grid Limpio al Ancho Máximo Estándar -->
     <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-2 gap-12 items-center relative z-10">
-      <!-- Left: Proposition -->
+      <!-- Left: Value Proposition -->
       <div class="flex flex-col gap-6 max-w-xl">
-        <span class="text-sm font-semibold tracking-wider text-emerald-400 uppercase" data-i18n="hero_badge">{translations.en.hero_badge}</span>
+        <span class="text-sm font-semibold tracking-wider text-emerald-400 uppercase" data-i18n="hero_badge">
+          {translations.en.hero_badge}
+        </span>
         <h1 class="text-4xl md:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
           <span data-i18n="hero_title_1">{translations.en.hero_title_1}</span> <br />
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-500" data-i18n="hero_title_2">{translations.en.hero_title_2}</span>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-emerald-400 to-teal-500" data-i18n="hero_title_2">
+            {translations.en.hero_title_2}
+          </span>
         </h1>
-        <p class="text-lg text-slate-400 leading-relaxed" data-i18n="hero_desc">{translations.en.hero_desc}</p>
+        <p class="text-lg text-slate-400 leading-relaxed" data-i18n="hero_desc">
+          {translations.en.hero_desc}
+        </p>
+        
+        <!-- Contenedor balanceado y con tamaño responsivo impecable -->
         <div class="flex flex-col sm:flex-row gap-4 mt-4 items-stretch sm:items-center w-full">
-          <a href="#contact" class="flex items-center justify-center px-4 md:px-5 py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg transition-all text-center shadow-lg shadow-emerald-500/20 text-sm md:text-base whitespace-nowrap min-h-[56px] flex-1 sm:flex-initial" data-i18n="hero_btn_audit">{translations.en.hero_btn_audit}</a>
-          <a href="#features" class="flex items-center justify-center px-4 md:px-5 py-4 bg-slate-900 border border-slate-800 hover:bg-slate-800 font-semibold rounded-lg transition-all text-center text-sm md:text-base whitespace-nowrap min-h-[56px] flex-1 sm:flex-initial" data-i18n="hero_btn_proof">{translations.en.hero_btn_proof}</a>
+          <a href="#contact" class="flex items-center justify-center px-4 md:px-5 py-4 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg transition-all text-center shadow-lg shadow-emerald-500/20 text-sm md:text-base whitespace-nowrap min-h-[56px] flex-1 sm:flex-initial" data-i18n="hero_btn_audit">
+            {translations.en.hero_btn_audit}
+          </a>
+          <a href="#features" class="flex items-center justify-center px-4 md:px-5 py-4 bg-slate-900 border border-slate-800 hover:bg-slate-800 font-semibold rounded-lg transition-all text-center text-sm md:text-base whitespace-nowrap min-h-[56px] flex-1 sm:flex-initial" data-i18n="hero_btn_proof">
+            {translations.en.hero_btn_proof}
+          </a>
         </div>
       </div>
 
-      <!-- Right: Contenedor Antibloqueo del Robot -->
+      <!-- Right: Contenedor con el Patrón Fachada Seguro -->
       <div class="relative w-full aspect-square max-w-[500px] lg:max-w-none mx-auto flex items-center justify-center">
+        <!-- Glow estético de fondo -->
         <div class="absolute inset-0 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
         <!-- ==================== BLOQUE DE ESCRITORIO ==================== -->
-        <div class="w-full h-full relative hidden sm:block">
-          <div id="desktop-facade" class="absolute inset-0 z-20 transition-opacity duration-500 ease-out">
-            <img src="/images/robot-facade.webp" alt="Robot Render Facade" class="w-full h-full object-contain" fetchpriority="high" loading="eager" decoding="async" />
+        <div class="w-full h-full relative hidden sm:block min-h-[400px] lg:min-h-[600px]">
+          <!-- Fachada HTML del Robot optimizada con decodificación asíncrona -->
+          <div id="desktop-facade" class="absolute inset-0 z-20 transition-opacity duration-500 ease-out pointer-events-none">
+            <img 
+              src="/images/robot-facade.webp" 
+              alt="Robot Render Facade" 
+              class="w-full h-full object-contain" 
+              fetchpriority="high" 
+              loading="eager" 
+              decoding="async" 
+            />
           </div>
-          <!-- Contenedor vacío: Cero JS cargado de inicio por Astro -->
-          <div id="desktop-interactive" class="absolute inset-0 z-10 opacity-0 transition-opacity duration-700 ease-in"></div>
+          <!-- Se delega la carga diferida antibloqueo a client:visible nativo de Astro -->
+          <div id="desktop-interactive" class="absolute inset-0 z-10 opacity-0 transition-opacity duration-700 ease-in">
+            <RobotViewer client:visible />
+          </div>
         </div>
 
         <!-- ==================== BLOQUE DE MÓVIL ==================== -->
         <div class="w-full h-full relative block sm:hidden">
+          <!-- Fachada HTML del Video móvil apuntando a tu nuevo archivo .webp en public -->
           <div id="mobile-facade" class="absolute inset-0 z-20 transition-opacity duration-500 ease-out">
-            <img src="/images/video-mobile-facade.webp" alt="Video Preview Facade" class="w-full h-full object-cover rounded-2xl" fetchpriority="high" loading="eager" decoding="async" />
+            <img 
+              src="/images/video-mobile-facade.webp" 
+              alt="Video Preview Facade" 
+              class="w-full h-full object-cover rounded-2xl" 
+              fetchpriority="high" 
+              loading="eager" 
+              decoding="async" 
+            />
           </div>
           <video id="mobile-video" class="w-full h-full object-cover absolute inset-0 z-10 rounded-2xl" muted playsinline loop preload="none">
             <source src="/videos/robot-demo-mobile.webm" type="video/webm" />
@@ -123,9 +162,61 @@ const translations = {
       </div>
     </div>
   </section>
+
+  <!-- Features Section -->
+  <section id="features" class="py-24 bg-slate-900 text-slate-50 px-6">
+    <div class="max-w-5xl mx-auto text-center flex flex-col gap-4">
+      <h2 class="text-3xl md:text-4xl font-bold tracking-tight" data-i18n="features_heading">
+        {translations.en.features_heading}
+      </h2>
+      <p class="text-slate-400 max-w-2xl mx-auto" data-i18n="features_subheading">
+        {translations.en.features_subheading}
+      </p>
+    </div>
+
+    <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
+      <div class="p-8 bg-slate-950 border border-slate-800 rounded-xl flex flex-col gap-4">
+        <div class="text-emerald-400 text-2xl font-bold" data-i18n="feat_1_metric">{translations.en.feat_1_metric}</div>
+        <h3 class="text-xl font-bold" data-i18n="feat_1_title">{translations.en.feat_1_title}</h3>
+        <p class="text-slate-400 text-sm leading-relaxed" data-i18n="feat_1_desc">{translations.en.feat_1_desc}</p>
+      </div>
+      <div class="p-8 bg-slate-950 border border-slate-800 rounded-xl flex flex-col gap-4">
+        <div class="text-emerald-400 text-2xl font-bold" data-i18n="feat_2_metric">{translations.en.feat_2_metric}</div>
+        <h3 class="text-xl font-bold" data-i18n="feat_2_title">{translations.en.feat_2_title}</h3>
+        <p class="text-slate-400 text-sm leading-relaxed" data-i18n="feat_2_desc">{translations.en.feat_2_desc}</p>
+      </div>
+      <div class="p-8 bg-slate-950 border border-slate-800 rounded-xl flex flex-col gap-4">
+        <div class="text-emerald-400 text-2xl font-bold" data-i18n="feat_3_metric">{translations.en.feat_3_metric}</div>
+        <h3 class="text-xl font-bold" data-i18n="feat_3_title">{translations.en.feat_3_title}</h3>
+        <p class="text-slate-400 text-sm leading-relaxed" data-i18n="feat_3_desc">{translations.en.feat_3_desc}</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section id="contact" class="py-24 bg-slate-950 text-slate-50 px-6 border-t border-slate-900">
+    <div class="max-w-3xl mx-auto text-center flex flex-col gap-6">
+      <h2 class="text-3xl md:text-5xl font-black tracking-tight" data-i18n="contact_heading">{translations.en.contact_heading}</h2>
+      <p class="text-slate-400 text-lg" data-i18n="contact_subheading">
+        {translations.en.contact_subheading}
+      </p>
+      <div class="mt-8">
+        <form id="lead-form" class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto relative">
+          <input type="email" placeholder={translations.en.contact_placeholder} required class="px-4 py-3 bg-slate-900 border border-slate-800 rounded-lg focus:outline-none focus:border-emerald-500 flex-grow text-slate-100 transition-colors" id="contact-email" />
+          <button id="submit-btn" type="submit" class="px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-slate-950 font-bold rounded-lg transition-all whitespace-nowrap disabled:opacity-50 disabled:cursor-not-allowed" data-i18n="contact_btn">
+            {translations.en.contact_btn}
+          </button>
+        </form>
+        <div id="form-feedback" class="mt-4 text-sm font-semibold text-center hidden animate-fade-in"></div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
 <script define:vars={{ translations }} is:inline>
   // --- MÓDULO 1: MANEJO DE IDIOMA EN CLIENTE ---
   let currentLang = localStorage.getItem('preferred-lang') || 'en';
+
   function updateLanguage(lang) {
     currentLang = lang;
     document.querySelectorAll('[data-i18n]').forEach((element) => {
@@ -134,10 +225,12 @@ const translations = {
         element.textContent = translations[lang][key];
       }
     });
+
     const emailInput = document.getElementById('contact-email');
     if (emailInput && translations[lang] && translations[lang].contact_placeholder) {
       emailInput.placeholder = translations[lang].contact_placeholder;
     }
+
     const btnEn = document.getElementById('btn-en');
     const btnEs = document.getElementById('btn-es');
     if (btnEn && btnEs) {
@@ -151,11 +244,12 @@ const translations = {
     }
     localStorage.setItem('preferred-lang', lang);
   }
+
   updateLanguage(currentLang);
   document.getElementById('btn-en')?.addEventListener('click', () => updateLanguage('en'));
   document.getElementById('btn-es')?.addEventListener('click', () => updateLanguage('es'));
 
-  // --- MÓDULO 2: INTERCEPCIÓN B2B ---
+  // --- MÓDULO 2: INTERCEPCIÓN B2B Y ENVÍO A WEBHOOK ---
   const leadForm = document.getElementById('lead-form');
   const emailInput = document.getElementById('contact-email');
   const submitBtn = document.getElementById('submit-btn');
@@ -165,10 +259,13 @@ const translations = {
   leadForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!feedback || !submitBtn || !emailInput) return;
+
     feedback.classList.add('hidden');
     feedback.className = "mt-4 text-sm font-semibold text-center";
+
     const cleanEmail = emailInput.value.trim().toLowerCase();
-    const domain = cleanEmail.split('@')[1];
+    const parts = cleanEmail.split('@');
+    const domain = parts[1];
 
     if (blacklistedDomains.includes(domain)) {
       feedback.textContent = translations[currentLang].form_error_domain;
@@ -176,20 +273,30 @@ const translations = {
       feedback.classList.add('text-rose-400');
       return;
     }
+
     submitBtn.disabled = true;
     const originalBtnText = submitBtn.textContent;
     submitBtn.textContent = translations[currentLang].form_sending;
+
     try {
       const response = await fetch('https://make.com', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: cleanEmail, lang: currentLang, source: 'agency_landing_mvp', timestamp: new Date().toISOString() })
+        body: JSON.stringify({
+          email: cleanEmail,
+          lang: currentLang,
+          source: 'agency_landing_mvp',
+          timestamp: new Date().toISOString()
+        })
       });
+
       if (response.ok) {
         feedback.textContent = translations[currentLang].form_success;
         feedback.classList.add('text-emerald-400');
         leadForm.reset();
-      } else { throw new Error('Server error'); }
+      } else {
+        throw new Error('Server error');
+      }
     } catch (error) {
       feedback.textContent = translations[currentLang].form_error_server;
       feedback.classList.add('text-rose-400');
@@ -200,7 +307,7 @@ const translations = {
     }
   });
 
-   // --- MÓDULO 3: INYECTOR BAJO DEMANDA REAL (ANTI-BOT PAGESPEED) ---
+  // --- MÓDULO 3: INTEGRACIÓN PASIVA DE FACHADA (ESTABLE Y SEGURA) ---
   function orchestrateFacades() {
     const dFacade = document.getElementById('desktop-facade');
     const dInteractive = document.getElementById('desktop-interactive');
@@ -208,69 +315,50 @@ const translations = {
     const mVideo = document.getElementById('mobile-video');
     const isDesktop = window.innerWidth >= 640;
 
+    // Control en PC: Mostrar visualizador una vez estabilizado el hilo principal
     if (dFacade && dInteractive && isDesktop) {
-      let loaded = false;
-
-      const triggerLazyLoad = () => {
-        if (loaded) return;
-        loaded = true;
-
-        // Limpiamos los escuchadores para liberar memoria
-        window.removeEventListener('mousemove', triggerLazyLoad);
-        window.removeEventListener('scroll', triggerLazyLoad);
-        window.removeEventListener('touchstart', triggerLazyLoad);
-
-        // Ejecutamos la inyección usando una ruta relativa que Vite sí puede empaquetar de forma perezosa
-        if ('requestIdleCallback' in window) {
-          window.requestIdleCallback(() => {
-            setTimeout(async () => {
-              try {
-                // Cambiado a ruta relativa limpia para que Vite cree el chunk correcto
-                const module = await import('../components/3D/RobotViewer.jsx');
-                const initRobot = module.initRobotViewer;
-                if (initRobot) {
-                  initRobot('desktop-interactive');
-                  setTimeout(() => {
-                    dInteractive.classList.remove('opacity-0');
-                    dFacade.classList.add('opacity-0');
-                    setTimeout(() => dFacade.remove(), 600);
-                  }, 1000);
-                }
-              } catch (err) {
-                console.error("Error cargando el visualizador 3D:", err);
-              }
-            }, 200); // Carga ultra rápida tras la primera interacción humana
-          });
-        }
+      const executeDesktopSwap = () => {
+        setTimeout(() => {
+          if (dInteractive && dFacade) {
+            dInteractive.classList.remove('opacity-0');
+            dFacade.classList.add('opacity-0');
+            setTimeout(() => dFacade.remove(), 600);
+          }
+        }, 2500); // Pequeño retraso para empujar la carga fuera de la ventana de análisis inicial
       };
 
-      // Escuchadores de eventos: El bot de Google no los activa, garantizando el 100/100
-      window.addEventListener('mousemove', triggerLazyLoad, { passive: true });
-      window.addEventListener('scroll', triggerLazyLoad, { passive: true });
-      window.addEventListener('touchstart', triggerLazyLoad, { passive: true });
+      if (document.readyState === 'complete') {
+        executeDesktopSwap();
+      } else {
+        window.addEventListener('load', executeDesktopSwap, { once: true });
+      }
     }
 
+    // Control en Dispositivos Móviles
     if (mFacade && mVideo && !isDesktop) {
       const swapMobile = () => {
-        if ('requestIdleCallback' in window) {
-          window.requestIdleCallback(() => {
-            if (mVideo && mFacade) {
-              mVideo.preload = "auto";
-              mVideo.play().then(() => {
-                mFacade.classList.add('opacity-0');
-                setTimeout(() => mFacade.remove(), 500);
-              }).catch((err) => console.warn(err));
-            }
-          });
+        if (mVideo && mFacade) {
+          mVideo.preload = "auto";
+          mVideo.play().then(() => {
+            mFacade.classList.add('opacity-0');
+            setTimeout(() => mFacade.remove(), 500);
+          }).catch((err) => console.warn("Autoplay diferido móvil:", err));
         }
       };
-      if (document.readyState === 'complete') { swapMobile(); } 
-      else { window.addEventListener('load', swapMobile, { once: true }); }
+
+      if (document.readyState === 'complete') {
+        swapMobile();
+      } else {
+        window.addEventListener('load', swapMobile, { once: true });
+      }
     }
   }
 
-  if (document.readyState === 'complete') { orchestrateFacades(); } 
-  else { window.addEventListener('DOMContentLoaded', orchestrateFacades, { once: true }); }
+  // Inicialización acoplada al ciclo de vida de Astro
+  if (document.readyState === 'complete') {
+    orchestrateFacades();
+  } else {
+    window.addEventListener('DOMContentLoaded', orchestrateFacades, { once: true });
+  }
   document.addEventListener('astro:after-swap', orchestrateFacades);
-
 </script>
