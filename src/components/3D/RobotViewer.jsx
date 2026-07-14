@@ -7,7 +7,7 @@ export default function RobotViewer() {
   return (
     <div className="relative w-full h-[400px] sm:h-[450px] lg:h-[600px] flex items-center justify-center overflow-hidden rounded-2xl bg-slate-900/40 border border-slate-800/50 backdrop-blur-sm z-10 px-4 md:px-0">
       
-      {/* Loader de carga progresiva limpio */}
+      {/* Loader de carga progresiva premium */}
       <div 
         className={`absolute inset-0 z-10 flex flex-col items-center justify-center transition-opacity duration-700 ease-in-out pointer-events-none ${
           is3DReady ? 'opacity-0' : 'opacity-100'
@@ -19,7 +19,7 @@ export default function RobotViewer() {
         </div>
       </div>
 
-      {/* El robot ligero de 383 kB cargando directamente */}
+      {/* Tu Robot Premium Original de Alta Resolución */}
       <div className="w-full h-full">
         <Spline 
           scene="https://spline.design" 
