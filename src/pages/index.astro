@@ -295,7 +295,7 @@ const translations = {
     }
   });
 
-    // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (CALIBRACIÓN PRECISIÓN 100/100) ---
+    // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (EDICIÓN DE GLORIA DOBLE 100) ---
   function orchestrateFacades() {
     const dFacade = document.getElementById('desktop-facade');
     const dInteractive = document.getElementById('desktop-interactive');
@@ -307,14 +307,14 @@ const translations = {
     // --- BLOQUE MAESTRO DE ESCRITORIO (PC) ---
     if (dFacade && dInteractive && isDesktop) {
       const swapDesktop = () => {
-        // Calibración exacta a 3.8s para recortar el LCP en PC y asegurar el 100 unificado
+        // Extendemos a 6 segundos para dar paz absoluta al TBT y asegurar el 100 de escritorio con Lazy Loading
         setTimeout(() => {
           if (dInteractive && dFacade) {
             dInteractive.classList.remove('opacity-0');
             dFacade.classList.add('opacity-0');
             setTimeout(() => dFacade.remove(), 500);
           }
-        }, 3800);
+        }, 6000);
       };
 
       if ('requestIdleCallback' in window) {
