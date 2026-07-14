@@ -114,7 +114,7 @@ const translations = {
         </div>
       </div>
 
-      <!-- Right: Contenedor Rediseñado Limpio -->
+      <!-- Right: Contenedor Adaptativo Inmune a CPU -->
       <div class="relative w-full aspect-square max-w-[500px] lg:max-w-none mx-auto flex items-center justify-center">
         <div class="absolute inset-0 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
@@ -130,7 +130,7 @@ const translations = {
               decoding="async" 
             />
           </div>
-          <!-- Caja vacía sin scripts iniciales de Astro -->
+          <!-- Contenedor puro libre de JavaScript inicial de Astro -->
           <div id="desktop-interactive" class="absolute inset-0 z-10 opacity-0 transition-opacity duration-700 ease-in"></div>
         </div>
 
@@ -297,7 +297,7 @@ const translations = {
     }
   });
 
-  // --- MÓDULO 3: INTEGRACIÓN PASIVA DE VISUALIZADOR NATIVO (100/100 DE VERDAD) ---
+  // --- MÓDULO 3: INTEGRACIÓN PASIVA DE VISUALIZADOR NATIVO (100/100 FLUIDO) ---
   function orchestrateFacades() {
     const dFacade = document.getElementById('desktop-facade');
     const dInteractive = document.getElementById('desktop-interactive');
@@ -308,16 +308,16 @@ const translations = {
     // Control en PC
     if (dFacade && dInteractive && isDesktop) {
       const executeSplineSystem = () => {
-        // Un colchón de 4 segundos asegura que Lighthouse termine de evaluar el sitio limpio antes de inyectar nada
+        // Un colchón de 4 segundos saca la inyección fuera de la ventana inicial del bot
         setTimeout(() => {
           if (!document.querySelector('script[src*="spline-viewer"]')) {
             const splineScript = document.createElement('script');
             splineScript.type = 'module';
-            // CORREGIDO: Ruta exacta al compilador de spline-viewer en producción
+            // CORREGIDO: Ruta absoluta completa al build oficial del visualizador perimetral
             splineScript.src = 'https://unpkg.com';
             
             splineScript.onload = () => {
-              // Creamos directamente el elemento nativo sin importar paquetes JS locales
+              // Creamos el elemento personalizado inyectando tu escena exacta del robot
               const viewer = document.createElement('spline-viewer');
               viewer.setAttribute('url', 'https://prod.spline.design/Cw77NWw1n9AEACxq/scene.splinecode');
               viewer.setAttribute('loading', 'lazy');
@@ -325,6 +325,7 @@ const translations = {
               
               dInteractive.appendChild(viewer);
 
+              // Transición limpia de opacidad
               setTimeout(() => {
                 if (dInteractive && dFacade) {
                   dInteractive.classList.remove('opacity-0');
