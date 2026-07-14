@@ -8,9 +8,10 @@ import { createClient } from '@sanity/client';
 const client = createClient({
   projectId: 'rgu9dc3a',
   dataset: 'production',
-  useCdn: true, // Utiliza la red Edge perimetral global de Sanity
+  useCdn: false, // 👈 ¡CAMBIA ESTO A FALSE! Obliga a leer datos frescos al compilar
   apiVersion: '2026-03-12',
 });
+
 
 // Consulta nativa ejecutada durante la compilación estática
 const cmsDataArray = await client.fetch(`*[_type == "landingContent"]`);
