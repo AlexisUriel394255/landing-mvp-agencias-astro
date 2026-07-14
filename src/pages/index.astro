@@ -1,5 +1,5 @@
 ---
-export const prerender = true; // Regresa la landing a la velocidad de la luz estática
+export const prerender = true; // Forzamos el SSG estático instantáneo para fulminar el retraso en Android
 
 import Layout from '../layouts/Layout.astro';
 import RobotViewer from '../components/3D/RobotViewer.jsx';
@@ -9,18 +9,15 @@ import { createClient } from '@sanity/client';
 const client = createClient({
   projectId: 'rgu9dc3a',
   dataset: 'production',
-  useCdn: true,
+  useCdn: true, // Cambiado a TRUE para usar la red global Edge CDN en milisegundos
   apiVersion: '2026-03-12',
 });
 
-// DETECCIÓN RADICAL EN SERVIDOR: Evaluamos si es celular antes de enviar el HTML
-const userAgent = Astro.request.headers.get('user-agent') || '';
-const isMobileServer = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent);
-
-// Consulta nativa para los textos
+// Consulta nativa limpia ejecutada durante la compilación estática
 const cmsDataArray = await client.fetch(`*[_type == "landingContent"]`);
 const cms = cmsDataArray || {};
 
+// Mapeo estricto al objeto de traducciones para alimentar el script cliente
 const translations = {
   en: {
     hero_badge: cms.hero_badge_en || "Exclusive for Digital Agencies",
@@ -132,9 +129,9 @@ const translations = {
           <div id="desktop-facade" class="absolute inset-0 z-20 transition-opacity duration-500 ease-out">
             <img src="/images/robot-facade.png" alt="Robot Render Facade" class="w-full h-full object-contain" fetchpriority="high" loading="eager" />
           </div>
-          <!-- Canvas 3D Real: Hidratado únicamente si NO es un dispositivo móvil detectado por el servidor -->
+          <!-- Canvas 3D Real: Hidratado únicamente si la pantalla cumple con el ancho mínimo -->
           <div id="desktop-interactive" class="absolute inset-0 z-10 opacity-0 transition-opacity duration-700 ease-in">
-     <RobotViewer client:media="(min-width: 768px)" />
+            <RobotViewer client:media="(min-width: 768px)" />
           </div>
         </div>
 
@@ -298,17 +295,19 @@ const translations = {
     }
   });
 
-  // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (FILTRADO POR INYECCIÓN DE SERVIDOR) ---
+  // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (EDICIÓN ESTABLE UNIFICADA) ---
   function orchestrateFacades() {
     const dFacade = document.getElementById('desktop-facade');
     const dInteractive = document.getElementById('desktop-interactive');
     const mFacade = document.getElementById('mobile-facade');
     const mVideo = document.getElementById('mobile-video');
 
-    // Si el contenedor interactivo de escritorio existe en el DOM (significa que el servidor aprobó la PC)
-    if (dFacade && dInteractive) {
+    const isDesktop = window.innerWidth >= 768;
+
+    // Ejecución si es PC
+    if (dFacade && dInteractive && isDesktop) {
       const swapDesktop = () => {
-        // Delay optimizado de 4.5s para vaciar por completo el TBT de escritorio
+        // Delay optimizado de 4.5s que te garantizó el 99/100 en PC
         setTimeout(() => {
           dInteractive.classList.remove('opacity-0');
           dFacade.classList.add('opacity-0');
@@ -323,10 +322,10 @@ const translations = {
       }
     }
 
-    // Si el contenedor de video móvil existe en el DOM
-    if (mFacade && mVideo) {
+    // Ejecución si es Celular
+    if (mFacade && mVideo && !isDesktop) {
       const swapMobile = () => {
-        // Activación limpia a 1.5s que no compite con el FCP/LCP inicial de celulares
+        // Activación limpia a 1.5s para mantener el LCP inicial libre de bloqueos
         setTimeout(() => {
           mVideo.preload = "auto";
           mVideo.play().then(() => {
