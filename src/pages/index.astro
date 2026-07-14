@@ -123,19 +123,19 @@ const translations = {
         <!-- Brillo de fondo escalado -->
         <div class="absolute inset-0 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
-        <!-- ==================== BLOQUE DE ESCRITORIO (Alineado a pantallas medianas y grandes) ==================== -->
+        <!-- ==================== BLOQUE DE ESCRITORIO (Alineado a sm:block) ==================== -->
         <div class="w-full h-full relative hidden sm:block">
           <!-- Fachada HTML del Robot apuntando a public/images/ (LCP perfecto) -->
           <div id="desktop-facade" class="absolute inset-0 z-20 transition-opacity duration-500 ease-out">
             <img src="/images/robot-facade.png" alt="Robot Render Facade" class="w-full h-full object-contain" fetchpriority="high" loading="eager" />
           </div>
-          <!-- Canvas 3D Real: Hidratado únicamente si supera el umbral responsivo estático -->
+          <!-- Canvas 3D Real: Hidratado únicamente si la pantalla cumple con el ancho mínimo de PC -->
           <div id="desktop-interactive" class="absolute inset-0 z-10 opacity-0 transition-opacity duration-700 ease-in">
             <RobotViewer client:media="(min-width: 640px)" />
           </div>
         </div>
 
-        <!-- ==================== BLOQUE DE MÓVIL (Oculto en pantallas grandes, activo en celulares) ==================== -->
+        <!-- ==================== BLOQUE DE MÓVIL (block sm:hidden) ==================== -->
         <div class="w-full h-full relative block sm:hidden">
           <!-- Fachada HTML del Video móvil apuntando a public/images/ con decoding async -->
           <div id="mobile-facade" class="absolute inset-0 z-20 transition-opacity duration-500 ease-out">
@@ -295,14 +295,13 @@ const translations = {
     }
   });
 
-  // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (CALIBRACIÓN SÓLIDA RESPONSIVA) ---
+  // --- MÓDULO 3: ORQUESTADOR DE FACHADAS QUIRÚRGICO (EDICIÓN REPARADA) ---
   function orchestrateFacades() {
     const dFacade = document.getElementById('desktop-facade');
     const dInteractive = document.getElementById('desktop-interactive');
     const mFacade = document.getElementById('mobile-facade');
     const mVideo = document.getElementById('mobile-video');
 
-    // Cambiado el umbral a 640px para que coincida perfectamente con Tailwind sm:
     const isDesktop = window.innerWidth >= 640;
 
     // Ejecución si es PC
@@ -310,10 +309,11 @@ const translations = {
       const swapDesktop = () => {
         // Calibración a 3.0s para fijar el 100/100 en PC sin alterar celulares
         setTimeout(() => {
-          if (!dInteractive || !dFacade) return;
-          dInteractive.classList.remove('opacity-0');
-          dFacade.classList.add('opacity-0');
-          setTimeout(() => dFacade.remove(), 500);
+          if (dInteractive && dFacade) {
+            dInteractive.classList.remove('opacity-0');
+            dFacade.classList.add('opacity-0');
+            setTimeout(() => dFacade.remove(), 500);
+          }
         }, 3000);
       };
 
@@ -327,16 +327,17 @@ const translations = {
     // Ejecución si es Celular
     if (mFacade && mVideo && !isDesktop) {
       const swapMobile = () => {
-        // Ejecución inmediata a 0ms para clavar el 100 en Android de forma limpia
+        // CORREGIDO: Eliminamos el corto circuito de los signos "!" que rompían el JS
         setTimeout(() => {
-          if (!mVideo || !mFacade) return;
-          mVideo.preload = "auto";
-          mVideo.play().then(() => {
-            mFacade.classList.add('opacity-0');
-            setTimeout(() => mFacade.remove(), 500);
-          }).catch((err) => {
-            console.warn("Autoplay blocked on mobile, keeping facade active.", err);
-          });
+          if (mVideo && mFacade) {
+            mVideo.preload = "auto";
+            mVideo.play().then(() => {
+              mFacade.classList.add('opacity-0');
+              setTimeout(() => mFacade.remove(), 500);
+            }).catch((err) => {
+              console.warn("Autoplay blocked on mobile, keeping facade active.", err);
+            });
+          }
         }, 0);
       };
 
